@@ -1,0 +1,154 @@
+# ============================================================
+#   BlossomCore  -  PvP rating and PvP ranks
+# ============================================================
+# PvP ranks are SEPARATE from the free ranks in ranks.yml.
+# Players win rating for killing other players and lose some when they die.
+#
+# After editing, type:  /blossomcore reload
+
+# ------------------------------------------------------------
+# Traditional PvP only: swords, axes, shields and bows.
+# ------------------------------------------------------------
+combat-rules:
+  # End crystals do no damage to players (they still work on the dragon fight)
+  block-crystal-damage: true
+  # Respawn anchors can't be used outside the Nether, where they only explode
+  block-respawn-anchors: true
+  # The mace does no damage to players (it still works on mobs)
+  block-mace-pvp: true
+
+# ------------------------------------------------------------
+# Rating
+# ------------------------------------------------------------
+rating:
+  # Everyone starts here
+  start: 1000
+  # A kill on a player with the SAME rating is worth half of this (16).
+  # Beating a higher rated player pays more, beating a lower one pays less.
+  k-factor: 32
+  # A kill is never worth less / more than this
+  min-gain: 4
+  max-gain: 40
+  # The loser drops this share of what the winner got (0.75 = three quarters)
+  loss-factor: 0.75
+  # Nobody drops below this rating
+  floor: 0
+
+# ------------------------------------------------------------
+# Anti-abuse. A kill that fails any of these still happens in the world,
+# but it changes NO rating, kills, deaths or streaks, and the killer is told why.
+# ------------------------------------------------------------
+anti-abuse:
+  # Killing the same player again only counts after this many minutes
+  same-victim-cooldown-minutes: 30
+  # Counted kills allowed per day between the same two players (both directions together).
+  # Stops two friends, or one person with two accounts, trading kills. 0 = no limit.
+  max-kills-per-pair-per-day: 3
+  # Kills between two accounts on the same internet connection don't count
+  block-same-ip: true
+  # The victim must have played at least this long on the server (stops fresh alt accounts)
+  min-victim-playtime-minutes: 60
+  # The victim must be wearing at least this many armour pieces (0 = off)
+  min-victim-armor-pieces: 2
+  # Teammates don't count (uses BlossomTeams through PlaceholderAPI)
+  ignore-teammates: true
+  team-placeholder: "%blossomteams_name%"
+  # Worlds where kills never count
+  disabled-worlds: []
+
+# ------------------------------------------------------------
+# Kill streaks
+# ------------------------------------------------------------
+streaks:
+  # Tell the server when a player reaches these streaks
+  announce-at: [5, 10, 15, 20, 30]
+  # Tell the server when a streak of at least this many is ended (0 = off)
+  announce-ended-from: 5
+
+# ------------------------------------------------------------
+# Seasons. Staff end a season with:  /blossomcore season end confirm
+# Everyone then gets the "season-rewards" of the PvP rank they finished on
+# (offline players get them the next time they join), and ratings are
+# pulled back toward the start.
+# ------------------------------------------------------------
+season:
+  # 0.5 = keep half the distance from the start (1600 becomes 1300). 0 = full reset, 1 = no reset.
+  keep-on-reset: 0.5
+
+# ------------------------------------------------------------
+# The PvP ranks
+#   rating          rating needed
+#   icon            item shown in /pvp
+#   rewards         given the FIRST time the rank is reached each season
+#   season-rewards  given at the end of a season to players who finished on this rank
+#       money: 1000      petals: 100      points: 0
+#       commands:        console commands, {player} = their name
+# ------------------------------------------------------------
+ranks:
+  rookie:
+    name: "&7Rookie"
+    rating: 0
+    icon: WOODEN_SWORD
+
+  fighter:
+    name: "&fFighter"
+    rating: 1050
+    icon: STONE_SWORD
+    rewards:
+      petals: 50
+    season-rewards:
+      petals: 100
+
+  warrior:
+    name: "&#8FCB9BWarrior"
+    rating: 1150
+    icon: IRON_SWORD
+    rewards:
+      petals: 100
+    season-rewards:
+      petals: 250
+
+  elite:
+    name: "&#9AD8E8Elite"
+    rating: 1300
+    icon: GOLDEN_SWORD
+    rewards:
+      petals: 200
+    season-rewards:
+      petals: 500
+
+  champion:
+    name: "&#F7C6D4Champion"
+    rating: 1450
+    icon: DIAMOND_SWORD
+    rewards:
+      petals: 350
+    season-rewards:
+      petals: 900
+
+  master:
+    name: "&#F4A9C0Master"
+    rating: 1600
+    icon: DIAMOND_AXE
+    rewards:
+      petals: 500
+    season-rewards:
+      petals: 1500
+
+  grandmaster:
+    name: "&#E27D9CGrandmaster"
+    rating: 1800
+    icon: NETHERITE_SWORD
+    rewards:
+      petals: 750
+    season-rewards:
+      petals: 2500
+
+  legend:
+    name: "&#FFD98A&lBlossom Legend"
+    rating: 2000
+    icon: NETHER_STAR
+    rewards:
+      petals: 1000
+    season-rewards:
+      petals: 4000
