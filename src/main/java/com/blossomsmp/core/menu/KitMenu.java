@@ -99,6 +99,9 @@ public final class KitMenu extends Menu {
         } else if (kit.cooldownMs() > 0) {
             lore.add(Text.fill(plugin.raw("menu-kit-cooldown"), "{time}", Durations.format(kit.cooldownMs())));
         }
+        if (kit.resetOnDeath()) {
+            lore.add(plugin.raw("menu-kit-death-reset"));
+        }
         if (kit.maxClaims() > 0 && kit.cooldownMs() != Durations.ONCE) {
             lore.add(Text.fill(plugin.raw("menu-kit-max-claims"), "{max}", String.valueOf(kit.maxClaims())));
         }

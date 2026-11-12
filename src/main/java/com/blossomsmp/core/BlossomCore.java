@@ -8,6 +8,7 @@ import com.blossomsmp.core.hook.Money;
 import com.blossomsmp.core.hook.Placeholders;
 import com.blossomsmp.core.hook.VaultMoney;
 import com.blossomsmp.core.kit.KitManager;
+import com.blossomsmp.core.listener.KitGearListener;
 import com.blossomsmp.core.listener.PlayerListener;
 import com.blossomsmp.core.listener.PvpListener;
 import com.blossomsmp.core.menu.Menu;
@@ -97,6 +98,7 @@ public final class BlossomCore extends JavaPlugin {
         pm.registerEvents(pvpListener, this);
         pm.registerEvents(new PlayerListener(this, pvpListener), this);
         pm.registerEvents(new MenuListener(), this);
+        pm.registerEvents(new KitGearListener(this), this);
 
         PlayerCommands playerCommands = new PlayerCommands(this);
         for (String name : List.of("blossom", "ranks", "rankup", "kits", "kit", "pvp", "pvptop", "profile")) {

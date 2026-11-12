@@ -20,8 +20,8 @@ store-link: ""
 
 # ------------------------------------------------------------
 # Petals
-# Petals already live in BlossomSettings, so BlossomCore does not keep
-# a second balance. When a reward says "petals: 50", this console command
+# Petals live in BlossomToggles (they used to be in BlossomSettings),
+# so BlossomCore does not keep a second balance. When a reward says "petals: 50", this console command
 # runs. {player} = their name, {amount} = how many.
 # Leave give-command as "" to switch Petal rewards off.
 # ------------------------------------------------------------
@@ -61,6 +61,28 @@ kits:
   # ("" = tag them without showing a line.)
   mark-gear: true
   gear-lore: "&8Kit item"
+
+  # Dying makes your kits claimable again (cooldowns are cleared).
+  #   all-kits: true  = every kit, VIP and Netherite too
+  #   all-kits: false = only kits with "reset-on-death: true" in kits.yml
+  # A single kit can also opt out with "reset-on-death: false".
+  # The golden apple daily limit below still applies.
+  death-reset:
+    enabled: true
+    all-kits: true
+
+  # Kit gear stays with the player who claimed it. KEEP BOTH ON while death-reset
+  # is on, or players can collect endless kit gear by dying on purpose.
+  kit-gear:
+    # Can't be put in chests, ender chests, shulkers, hoppers, bundles, item frames
+    # or armour stands, and can't be dropped or given away. /sell's chest refuses it too.
+    locked: true
+    # Is deleted when its owner dies, so the killer can't loot it (works with keepInventory too)
+    vanish-on-death: true
+    # Weapons, tools and armour are always kit gear. These stackable items are too:
+    also-mark:
+      - GOLDEN_APPLE
+      - ENDER_PEARL
 
   # Items that can never be put in a kit, even by mistake.
   banned-items:
@@ -110,6 +132,7 @@ menus:
   # Extra buttons in the main menu (/blossom). Each one runs a command as the player.
   # Slots count from 0 (top left) to 44 (bottom right). Slots 4, 20, 22, 24 and 40 are taken.
   # command: ""  shows a "coming soon" message instead.
+  # Lore can use PlaceholderAPI placeholders, like %blossomsettings_petals_formatted%.
   links:
     shop:
       enabled: true
@@ -137,7 +160,9 @@ menus:
       icon: PINK_PETALS
       name: "&#F4A9C0&lPetal Shop"
       lore:
-        - "&7Spend your Petals."
+        - "&7Pickaxes, tools and spawners."
+        - "&7You have &#F4A9C0✿ %blossomsettings_petals_formatted% &7Petals"
+        - "&8Earn Petals by playing and fighting."
         - ""
         - "&#F4A9C0Click to open"
       command: "ps"

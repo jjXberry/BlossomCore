@@ -27,6 +27,7 @@
 #   permission          permission needed. Leave out = no permission. VIP kits use this.
 #   max-claims          most times a player can EVER claim it. Leave out = no limit.
 #   give-on-first-join  true = handed to brand new players automatically
+#   reset-on-death      false = this kit does NOT reset when you die (see death-reset in config.yml)
 #
 # THE LIMITS IN config.yml ALWAYS WIN
 #   Banned items are left out, enchantments above the limit are lowered,
@@ -200,7 +201,7 @@ kits:
     icon: IRON_SWORD
     category: pvp
     description:
-      - "&7Plain iron. No golden apples."
+      - "&7Plain iron and one golden apple."
     cooldown: 12h
     required-rank: sprout
     items:
@@ -213,6 +214,7 @@ kits:
       - "SHIELD"
       - "BOW"
       - "ARROW 32"
+      - "GOLDEN_APPLE 1"
       - "COOKED_BEEF 16"
 
   advanced_iron:
@@ -241,13 +243,14 @@ kits:
     icon: BOW
     category: pvp
     description:
-      - "&7A strong bow, light armour and a sword for close range."
+      - "&7A strong bow, light armour, a sword and golden apples."
     cooldown: 2d
     required-rank: bloom
     items:
       - "BOW 1 power:2"
       - "ARROW 64"
       - "ARROW 64"
+      - "GOLDEN_APPLE 2"
       - "IRON_SWORD"
       - "IRON_HELMET 1 protection:1"
       - "DIAMOND_CHESTPLATE"
@@ -272,7 +275,7 @@ kits:
       - "SHIELD"
       - "BOW"
       - "ARROW 48"
-      - "GOLDEN_APPLE 3"
+      - "GOLDEN_APPLE 4"
       - "COOKED_BEEF 16"
 
   diamond_warrior:
@@ -293,7 +296,7 @@ kits:
       - "SHIELD"
       - "BOW 1 power:1"
       - "ARROW 64"
-      - "GOLDEN_APPLE 4"
+      - "GOLDEN_APPLE 5"
       - "COOKED_BEEF 24"
 
   # ==========================================================
@@ -317,7 +320,7 @@ kits:
       - "SHIELD"
       - "BOW"
       - "ARROW 64"
-      - "GOLDEN_APPLE 4"
+      - "GOLDEN_APPLE 5"
       - "COOKED_BEEF 32"
 
   vipplus:

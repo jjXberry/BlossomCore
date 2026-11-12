@@ -2,6 +2,7 @@ package com.blossomsmp.core.menu;
 
 import com.blossomsmp.core.BlossomCore;
 import com.blossomsmp.core.data.PlayerData;
+import com.blossomsmp.core.hook.Placeholders;
 import com.blossomsmp.core.pvp.PvpManager;
 import com.blossomsmp.core.rank.Rank;
 import com.blossomsmp.core.util.Items;
@@ -76,8 +77,12 @@ public final class MainMenu extends Menu {
             if (slot < 0 || slot >= size || slot == RANKS || slot == KITS || slot == PVP || slot == PROFILE || slot == TOP) {
                 continue;
             }
-            set(slot, Items.icon(Items.material(s.getString("icon"), Material.PAPER),
-                    s.getString("name", key), s.getStringList("lore"), false));
+            List<String> lore = new ArrayList<>();
+            for (String line : s.getStringList("lore")) {
+                // %placeholders% from other plugins, like %blossomsettings_petals_formatted%
+                lore.add(plugin.hasPlaceholderApi() && line.contains("%") ? Placeholders.ask(viewer, line) : line);
+            }
+            set(slot, Items.icon(Items.material(s.getString("icon"), Material.PAPER), s.getString("name", key), lore, false));
             links.put(slot, s.getString("command", ""));
         }
     }

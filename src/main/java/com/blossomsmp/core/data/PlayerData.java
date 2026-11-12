@@ -47,6 +47,8 @@ public final class PlayerData {
     public transient int activeMinutes;
     public transient long lastSpot;
     public transient String notifiedRank = "";
+    /** Kits were reset by a death: tell the player when they respawn. */
+    public transient int kitsResetOnDeath;
 
     public PlayerData(UUID uuid, String name) {
         this.uuid = uuid;

@@ -170,6 +170,7 @@ public final class PvpManager {
         return last == null ? Long.MAX_VALUE : System.currentTimeMillis() - last;
     }
 
+    /** The player left or died: their fight is over. */
     public void forget(UUID uuid) {
         lastCombat.remove(uuid);
     }

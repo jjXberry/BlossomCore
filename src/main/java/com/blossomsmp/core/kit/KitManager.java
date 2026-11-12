@@ -37,6 +37,9 @@ public final class KitManager {
     private int gapPerKit;
     private int gapPerDay;
     private long blockAfterPvpMs;
+    private boolean deathReset;
+    private boolean lockGear;
+    private boolean vanishOnDeath;
 
     public KitManager(BlossomCore plugin) {
         this.plugin = plugin;
@@ -50,8 +53,25 @@ public final class KitManager {
         gapPerKit = config.getInt("golden-apples.max-per-kit", 6);
         gapPerDay = config.getInt("golden-apples.max-per-day-from-kits", 12);
         blockAfterPvpMs = config.getInt("kits.block-after-pvp-seconds", 20) * 1000L;
-        boolean markGear = config.getBoolean("kits.mark-gear", true);
+        deathReset = config.getBoolean("kits.death-reset.enabled", true);
+        boolean resetDefault = config.getBoolean("kits.death-reset.all-kits", true);
+        lockGear = config.getBoolean("kits.kit-gear.locked", true);
+        vanishOnDeath = config.getBoolean("kits.kit-gear.vanish-on-death", true);
+        boolean markGear = config.getBoolean("kits.mark-gear", true) || lockGear || vanishOnDeath;
         String gearLore = config.getString("kits.gear-lore", "");
+        Set<Material> alsoMark = new HashSet<>();
+        for (String name : config.getStringList("kits.kit-gear.also-mark")) {
+            Material material = Material.matchMaterial(name);
+            if (material != null) {
+                alsoMark.add(material);
+            } else {
+                plugin.getLogger().warning("config.yml: '" + name + "' in kits.kit-gear.also-mark is not a Minecraft item.");
+            }
+        }
+        if (deathReset && (!lockGear || !vanishOnDeath)) {
+            plugin.getLogger().warning("config.yml: kits reset on death, but kit gear is not locked and/or does not "
+                    + "vanish on death. Players can collect endless kit gear by dying. Turn both on under kits.kit-gear.");
+        }
         int defaultMaxLevel = config.getInt("kits.max-enchant-levels.default", 3);
         ConfigurationSection maxLevels = config.getConfigurationSection("kits.max-enchant-levels");
 
@@ -142,7 +162,7 @@ public final class KitManager {
                         apples += item.getAmount();
                     }
                     capEnchants(item, maxLevels, defaultMaxLevel, problems);
-                    if (markGear && item.getMaxStackSize() == 1) {
+                    if (markGear && (item.getMaxStackSize() == 1 || alsoMark.contains(item.getType()))) {
                         mark(item, id, gearLore);
                     }
                     items.add(item);
@@ -158,7 +178,8 @@ public final class KitManager {
                         Items.material(s.getString("icon"), items.get(0).getType()), category,
                         List.copyOf(s.getStringList("description")), cooldown, requiredRank,
                         s.getString("permission", ""), s.getBoolean("give-on-first-join", false),
-                        Math.max(0, s.getInt("max-claims", 0)), List.copyOf(items)));
+                        Math.max(0, s.getInt("max-claims", 0)),
+                        deathReset && s.getBoolean("reset-on-death", resetDefault), List.copyOf(items)));
             }
         }
         kits = loaded;
@@ -203,6 +224,48 @@ public final class KitManager {
             meta.lore(lines);
         }
         item.setItemMeta(meta);
+    }
+
+    // ------------------------------------------------------------------ kit gear
+
+    /** True if this item came from a kit. */
+    public boolean isKitItem(ItemStack item) {
+        return item != null && !item.getType().isAir() && item.getPersistentDataContainer().has(kitKey);
+    }
+
+    /** Kit gear can't be stored, dropped or handed to anyone. */
+    public boolean gearLocked() {
+        return lockGear;
+    }
+
+    /** Kit gear is deleted when its owner dies, so nobody can loot it. */
+    public boolean gearVanishesOnDeath() {
+        return vanishOnDeath;
+    }
+
+    /**
+     * The player died: every kit marked reset-on-death can be claimed again.
+     *
+     * @return how many kits were reset
+     */
+    public int resetOnDeath(PlayerData data) {
+        int reset = 0;
+        for (Kit kit : kits.values()) {
+            if (!kit.resetOnDeath()) {
+                continue;
+            }
+            boolean had = data.kitLast.remove(kit.id()) != null;
+            if (kit.cooldownMs() == Durations.ONCE || kit.maxClaims() > 0) {
+                had |= data.kitClaims.remove(kit.id()) != null;
+            }
+            if (had) {
+                reset++;
+            }
+        }
+        if (reset > 0) {
+            data.touch();
+        }
+        return reset;
     }
 
     // ------------------------------------------------------------------ lookups
