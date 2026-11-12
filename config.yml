@@ -1,0 +1,195 @@
+# ============================================================
+#   BlossomCore  -  Blossom SMP
+#   Free ranks, kits, PvP rating and menus.
+# ============================================================
+# Colours: &a, &f, &l ...   Hex colours: &#F4A9C0
+# After editing any file, type:  /blossomcore reload
+#
+# Other files in this folder:
+#   ranks.yml     the free ranks and how Blossom Points are earned
+#   kits.yml      every kit
+#   pvp.yml       PvP rating, PvP ranks, anti-abuse, banned PvP styles
+#   messages.yml  every message
+
+# How often player progress is saved (minutes). It is also saved when a
+# player leaves, claims a kit, ranks up or gets a counted kill.
+autosave-minutes: 5
+
+# Shown when a player clicks a VIP rank in /ranks. Leave "" if you have no store.
+store-link: ""
+
+# ------------------------------------------------------------
+# Petals
+# Petals already live in BlossomSettings, so BlossomCore does not keep
+# a second balance. When a reward says "petals: 50", this console command
+# runs. {player} = their name, {amount} = how many.
+# Leave give-command as "" to switch Petal rewards off.
+# ------------------------------------------------------------
+petals:
+  name: "Petals"
+  give-command: "petals give {player} {amount}"
+
+ranks:
+  # Tell the whole server when someone ranks up
+  broadcast: true
+
+pvp:
+  # Tell the whole server when someone reaches a new PvP rank
+  broadcast-rank-ups: true
+
+# ------------------------------------------------------------
+# New players
+# ------------------------------------------------------------
+welcome:
+  # Tell everyone online that a new player joined
+  broadcast: true
+  # Open a menu a few seconds after their first join that shows the Starter Kit
+  open-starter-menu: true
+  # Players who were on the server BEFORE BlossomCore was installed already
+  # had a starter kit, so they don't get another one. true = give it anyway.
+  starter-kit-for-existing-players: false
+
+# ------------------------------------------------------------
+# Kit limits (these protect the balance of every kit in kits.yml)
+# ------------------------------------------------------------
+kits:
+  # Seconds after hitting (or being hit by) a player before a kit can be claimed.
+  # Stops people re-gearing in the middle of a fight.
+  block-after-pvp-seconds: 20
+
+  # Tag weapons, tools and armour from kits, and add this line under the item name.
+  # ("" = tag them without showing a line.)
+  mark-gear: true
+  gear-lore: "&8Kit item"
+
+  # Dying makes your kits claimable again (cooldowns are cleared).
+  #   all-kits: true  = every kit, VIP and Netherite too
+  #   all-kits: false = only kits with "reset-on-death: true" in kits.yml
+  # A single kit can also opt out with "reset-on-death: false".
+  # The golden apple daily limit below still applies.
+  death-reset:
+    enabled: true
+    all-kits: true
+
+  # Kit gear stays with the player who claimed it. KEEP BOTH ON while death-reset
+  # is on, or players can collect endless kit gear by dying on purpose.
+  kit-gear:
+    # Can't be put in chests, ender chests, shulkers, hoppers, bundles, item frames
+    # or armour stands, and can't be dropped or given away. /sell's chest refuses it too.
+    locked: true
+    # Is deleted when its owner dies, so the killer can't loot it (works with keepInventory too)
+    vanish-on-death: true
+    # Weapons, tools and armour are always kit gear. These stackable items are too:
+    also-mark:
+      - GOLDEN_APPLE
+      - ENDER_PEARL
+
+  # Items that can never be put in a kit, even by mistake.
+  banned-items:
+    - END_CRYSTAL
+    - RESPAWN_ANCHOR
+    - MACE
+    - ENCHANTED_GOLDEN_APPLE
+    - TOTEM_OF_UNDYING
+
+  # The highest enchantment level a kit item may have. Anything higher in
+  # kits.yml is lowered to this and the console tells you.
+  # Use the Minecraft name of the enchantment. "default" is for all the others.
+  max-enchant-levels:
+    default: 3
+    sharpness: 3
+    protection: 3
+    power: 3
+    unbreaking: 3
+    knockback: 1
+    punch: 1
+    fire_aspect: 1
+    flame: 1
+    infinity: 0
+    thorns: 0
+    mending: 0
+
+# ------------------------------------------------------------
+# Golden apples
+# ------------------------------------------------------------
+golden-apples:
+  # Most golden apples one kit may hold
+  max-per-kit: 6
+  # Most golden apples one player can get from ALL kits in one day.
+  # When they hit the limit the kit still works, just without the apples.
+  # 0 = no daily limit.
+  max-per-day-from-kits: 12
+
+# ------------------------------------------------------------
+# Menus
+# ------------------------------------------------------------
+menus:
+  # Top and bottom rows
+  border: PINK_STAINED_GLASS_PANE
+  # Everything else
+  filler: GRAY_STAINED_GLASS_PANE
+
+  # Extra buttons in the main menu (/blossom). Each one runs a command as the player.
+  # Slots count from 0 (top left) to 44 (bottom right). Slots 4, 20, 22, 24 and 40 are taken.
+  # command: ""  shows a "coming soon" message instead.
+  links:
+    shop:
+      enabled: true
+      slot: 29
+      icon: EMERALD
+      name: "&#8FCB9B&lShop"
+      lore:
+        - "&7Buy and sell items."
+        - ""
+        - "&#F4A9C0Click to open"
+      command: "shop"
+    teams:
+      enabled: true
+      slot: 31
+      icon: WHITE_BANNER
+      name: "&f&lTeams"
+      lore:
+        - "&7Make a team with your friends."
+        - ""
+        - "&#F4A9C0Click to open"
+      command: "team"
+    petalshop:
+      enabled: true
+      slot: 33
+      icon: PINK_PETALS
+      name: "&#F4A9C0&lPetal Shop"
+      lore:
+        - "&7Spend your Petals."
+        - ""
+        - "&#F4A9C0Click to open"
+      command: "ps"
+    quests:
+      enabled: false
+      slot: 38
+      icon: WRITABLE_BOOK
+      name: "&f&lQuests"
+      lore:
+        - "&7Daily, weekly and story quests."
+        - ""
+        - "&8Coming soon"
+      command: ""
+    events:
+      enabled: false
+      slot: 42
+      icon: FIREWORK_ROCKET
+      name: "&f&lEvents"
+      lore:
+        - "&7Festivals, hunts and tournaments."
+        - ""
+        - "&8Coming soon"
+      command: ""
+
+# ------------------------------------------------------------
+# Sounds (Minecraft sound names, "" = no sound)
+# ------------------------------------------------------------
+sounds:
+  click: "ui.button.click"
+  denied: "block.note_block.bass"
+  kit: "entity.item.pickup"
+  ready: "entity.experience_orb.pickup"
+  rank-up: "ui.toast.challenge_complete"

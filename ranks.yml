@@ -1,0 +1,183 @@
+# ============================================================
+#   BlossomCore  -  Free ranks
+# ============================================================
+# Free ranks are earned by PLAYING. They can never be bought.
+# Players rank up with /rankup (or by clicking the rank in /ranks)
+# once they have finished every requirement of the next rank.
+#
+# After editing, type:  /blossomcore reload
+
+# ------------------------------------------------------------
+# Blossom Points: the main progress number.
+# ------------------------------------------------------------
+points:
+  # Points for playing. Standing still (AFK) earns nothing.
+  playtime:
+    every-minutes: 10
+    amount: 5
+  # Points for each monster killed
+  mob-kill: 1
+  # Points for mining
+  mining:
+    every-blocks: 25
+    amount: 1
+  # Points for each PvP kill that counts (see pvp.yml)
+  pvp-kill: 20
+  # Most points a player can get from monsters + mining in one day,
+  # so mob farms can't rush the ranks. 0 = no limit.
+  daily-cap-mobs-and-mining: 250
+  # Staff (and later: quests and events) can also give points:
+  #   /blossomcore points give <player> <amount>
+
+# ------------------------------------------------------------
+# The ranks, from first to last. The ORDER here is the order of the ladder.
+#
+#   name          how the rank looks in menus and chat
+#   prefix        short version for the tab list: %blossomcore_rank_prefix%
+#   icon          the item shown in /ranks
+#   requirements  everything here must be reached (leave one out = not needed)
+#       points          Blossom Points (they are NOT spent)
+#       playtime-hours  hours played on the server
+#       mob-kills       monsters and animals killed
+#       blocks-mined    blocks mined in survival
+#       pvp-kills       counted PvP kills
+#       cost            money, taken when they rank up (needs Vault)
+#   perks         lines shown in the menu (text only)
+#   rewards       given once, when they reach the rank
+#       money: 1000        petals: 100        points: 0
+#       commands:          console commands, {player} = their name
+#         - "lp user {player} parent add sprout"
+# ------------------------------------------------------------
+ranks:
+  seedling:
+    name: "&#9DB8A0☘ Seedling"
+    prefix: "&#9DB8A0Seedling"
+    icon: WHEAT_SEEDS
+    perks:
+      - "Starter Kit (once)"
+      - "Survival Kit"
+
+  sprout:
+    name: "&#8FCB9B☘ Sprout"
+    prefix: "&#8FCB9BSprout"
+    icon: OAK_SAPLING
+    requirements:
+      points: 100
+      playtime-hours: 1
+      cost: 500
+    perks:
+      - "Miner Kit and Farmer Kit"
+      - "Iron Fighter Kit"
+    rewards:
+      petals: 100
+
+  gardener:
+    name: "&#6FB98F❀ Gardener"
+    prefix: "&#6FB98FGardener"
+    icon: FLOWERING_AZALEA
+    requirements:
+      points: 400
+      playtime-hours: 4
+      blocks-mined: 500
+      cost: 2500
+    perks:
+      - "Explorer Kit and Builder Kit"
+      - "Advanced Iron Kit (with golden apples)"
+    rewards:
+      petals: 250
+
+  bloom:
+    name: "&#F7C6D4✾ Bloom"
+    prefix: "&#F7C6D4Bloom"
+    icon: PINK_TULIP
+    requirements:
+      points: 1000
+      playtime-hours: 10
+      mob-kills: 150
+      cost: 7500
+    perks:
+      - "Diamond Archer Kit"
+    rewards:
+      petals: 500
+
+  blossom:
+    name: "&#F4A9C0✿ Blossom"
+    prefix: "&#F4A9C0Blossom"
+    icon: PINK_PETALS
+    requirements:
+      points: 2500
+      playtime-hours: 25
+      blocks-mined: 5000
+      cost: 20000
+    perks:
+      - "Diamond Fighter Kit"
+    rewards:
+      petals: 1000
+
+  sakura:
+    name: "&#E27D9C❀ Sakura"
+    prefix: "&#E27D9CSakura"
+    icon: CHERRY_SAPLING
+    requirements:
+      points: 5000
+      playtime-hours: 60
+      mob-kills: 1000
+      cost: 50000
+    perks:
+      - "Diamond Warrior Kit"
+    rewards:
+      petals: 2000
+
+  eternal:
+    name: "&#FFD98A♛ Eternal"
+    prefix: "&#FFD98AEternal"
+    icon: NETHER_STAR
+    requirements:
+      points: 10000
+      playtime-hours: 120
+      cost: 125000
+    perks:
+      - "Eternal Garden Kit"
+      - "The highest free rank on Blossom SMP"
+    rewards:
+      petals: 5000
+
+# ------------------------------------------------------------
+# VIP ranks (optional, paid). Shown under the free ranks in /ranks.
+# A player "has" a VIP rank when they have its permission, so give the
+# permission to a LuckPerms group, for example:
+#   lp group vip permission set blossomcore.vip true
+# Each rank includes the ones below it (Elite also counts as VIP+ and VIP).
+# The kits they unlock are in kits.yml.
+# ------------------------------------------------------------
+vip-ranks:
+  vip:
+    name: "&#8FCB9B&lVIP"
+    icon: IRON_INGOT
+    permission: blossomcore.vip
+    perks:
+      - "VIP Kit (diamond)"
+  vipplus:
+    name: "&#8FCB9B&lVIP&f&l+"
+    icon: GOLD_INGOT
+    permission: blossomcore.vipplus
+    perks:
+      - "Everything in VIP"
+      - "VIP+ Kit (lightly enchanted diamond)"
+      - "VIP Netherite Kit (every 7 days)"
+  elite:
+    name: "&#F4A9C0&lElite"
+    icon: DIAMOND
+    permission: blossomcore.elite
+    perks:
+      - "Everything in VIP+"
+      - "Elite Kit"
+      - "Elite Netherite Kit (every 7 days)"
+  legend:
+    name: "&#FFD98A&lBlossom Legend"
+    icon: NETHERITE_INGOT
+    permission: blossomcore.legend
+    perks:
+      - "Everything in Elite"
+      - "Blossom Legend Kit (Blossom-themed gear)"
+      - "Legend Netherite Kit (every 10 days)"

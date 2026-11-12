@@ -1,0 +1,65 @@
+name: BlossomCore
+version: 1.1.0
+main: com.blossomsmp.core.BlossomCore
+api-version: '1.21'
+author: BlossomSMP
+description: Free ranks, balanced kits, PvP rating and menus for Blossom SMP.
+softdepend: [Vault, PlaceholderAPI, BlossomEconomy, BlossomSettings, BlossomTeams, LuckPerms]
+
+commands:
+  blossom:
+    description: Open the Blossom SMP menu
+    aliases: [menu, bmenu]
+    usage: /blossom [help]
+  ranks:
+    description: See the free ranks and your progress
+    aliases: [rank]
+  rankup:
+    description: Rank up when you have finished the requirements
+  kits:
+    description: Open the kit menu
+  kit:
+    description: Claim a kit, or look inside one
+    usage: /kit <name>  or  /kit preview <name>
+  pvp:
+    description: See your PvP rating and the PvP ranks
+    aliases: [pvpstats]
+  pvptop:
+    description: See the best PvP players
+    aliases: [pvpleaderboard]
+  profile:
+    description: See your profile, or another online player's
+    usage: /profile [player]
+  blossomcore:
+    description: Staff commands for BlossomCore
+    aliases: [bcore]
+    permission: blossomcore.admin
+
+permissions:
+  blossomcore.admin:
+    description: Use /blossomcore (reload, points, rank, rating, kit, season)
+    default: op
+  blossomcore.kit.bypasscooldown:
+    description: Claim kits with no cooldown (one-time kits and claim limits still apply)
+    default: false
+
+  # The four VIP ranks. Each one includes the ranks below it,
+  # so a LuckPerms group only needs ONE of these.
+  blossomcore.vip:
+    description: VIP rank (VIP kit)
+    default: false
+  blossomcore.vipplus:
+    description: VIP+ rank (VIP+ kit, VIP Netherite kit)
+    default: false
+    children:
+      blossomcore.vip: true
+  blossomcore.elite:
+    description: Elite rank (Elite kit, Elite Netherite kit)
+    default: false
+    children:
+      blossomcore.vipplus: true
+  blossomcore.legend:
+    description: Blossom Legend rank (Legend kit, Legend Netherite kit)
+    default: false
+    children:
+      blossomcore.elite: true

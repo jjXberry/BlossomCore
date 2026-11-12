@@ -1,0 +1,225 @@
+# ============================================================
+#   BlossomCore  -  Messages
+# ============================================================
+# Colours: &a, &f, &l ...   Hex colours: &#F4A9C0
+# Words in {curly brackets} are filled in by the plugin. Keep them as they are.
+# Set a chat message to "" to switch it off.
+# After editing, type:  /blossomcore reload
+
+prefix: "&#F4A9C0&l✿ &8» &7"
+
+# ------------------------------------------------------------ general
+no-permission: "&cYou don't have permission to do that."
+players-only: "&cOnly players can use this."
+player-not-online: "&f{player} &cis not online."
+coming-soon: "&7This is coming soon."
+max-rank: "&#FFD98AHighest rank reached"
+data-problem: "&cYour progress could not be loaded, so this is switched off for now. Please tell staff."
+data-broken-kick: "&#F4A9C0Blossom SMP\n\n&fYour saved progress could not be loaded.\n&7Nothing is lost. Please tell staff so they can fix it."
+
+help:
+  - "&#F4A9C0&l✿ Blossom SMP"
+  - " &f/blossom &8- &7the main menu"
+  - " &f/ranks &8- &7free ranks and your progress"
+  - " &f/rankup &8- &7rank up when you are ready"
+  - " &f/kits &8- &7all kits"
+  - " &f/kit <name> &8- &7claim a kit"
+  - " &f/kit preview <name> &8- &7look inside a kit"
+  - " &f/pvp &8- &7your PvP rating and the PvP ranks"
+  - " &f/pvptop &8- &7the best PvP players"
+  - " &f/profile [player] &8- &7a profile"
+
+admin-help:
+  - "&#F4A9C0&l✿ BlossomCore staff commands"
+  - " &f/blossomcore reload"
+  - " &f/blossomcore points <give|take|set> <player> <amount>"
+  - " &f/blossomcore rank set <player> <rank>"
+  - " &f/blossomcore rating set <player> <amount>"
+  - " &f/blossomcore kit give <player> <kit>"
+  - " &f/blossomcore kit reset <player> [kit]"
+  - " &f/blossomcore season end confirm"
+  - " &f/blossomcore save"
+
+# ------------------------------------------------------------ first join
+# Sent to a brand new player. {player} = their name.
+welcome:
+  - ""
+  - "&#F4A9C0&l✿ Welcome to Blossom SMP, &f{player}&#F4A9C0&l!"
+  - "&7Your &fStarter Kit &7is in your inventory."
+  - "&7Play to earn free ranks. Each rank unlocks new kits."
+  - "&7Type &f/blossom &7to see everything, or &f/ranks &7for your next goal."
+  - ""
+welcome-broadcast: "&#F4A9C0✿ &f{player} &7joined Blossom SMP for the first time. Say hello!"
+
+# ------------------------------------------------------------ free ranks
+req-points: "Blossom Points"
+req-playtime: "hours played"
+req-mob-kills: "mobs defeated"
+req-blocks: "blocks mined"
+req-pvp-kills: "PvP kills"
+req-cost: "money (paid when you rank up)"
+req-line-done: "&a✔ &f{have} &7/ &f{need} &7{what}"
+req-line-todo: "&c✘ &f{have} &7/ &f{need} &7{what}"
+
+rank-max: "You already have the highest free rank."
+rank-not-ready: "You can't rank up to {rank} &7yet. You still need:"
+rank-no-money: "&cYou need &f{cost} &cto rank up."
+rank-ready: "You can rank up to {rank}&7! Type &f/rankup"
+rank-up: "You are now {rank}&7!"
+rank-up-rewards: "Rewards: &f{rewards}"
+rank-up-title: "{rank}"
+rank-up-subtitle: "&7You ranked up!"
+rank-up-broadcast: "&#F4A9C0✿ &f{player} &7ranked up to {rank}&7!"
+
+vip-info: "VIP ranks are optional extras. Free players can reach every free rank and kit. Store: &f{store}"
+vip-info-no-store: "VIP ranks are optional extras. Free players can reach every free rank and kit."
+
+# ------------------------------------------------------------ kits
+kit-usage: "Use &f/kit <name> &7or &f/kit preview <name>"
+kit-unknown: "&cThere is no kit called &f{kit}&c. Type &f/kits &cto see them."
+kit-claimed: "You claimed the {kit}&7."
+kit-first-join: "You received the {kit}&7."
+kit-cooldown: "&cYou can claim the {kit} &cagain in &f{time}&c."
+kit-need-rank: "&cThe {kit} &cunlocks at the {rank} &crank. Type &f/ranks"
+kit-need-vip: "&cThe {kit} &cis for a VIP rank."
+kit-used-up: "&cYou have already claimed the {kit}&c."
+kit-no-space: "&cMake &f{slots} &cmore free inventory slots first."
+kit-in-combat: "&cYou were just in a fight. Wait &f{time}&c."
+kit-death-reset: "You died, so your kits are ready again. Type &f/kits"
+kit-gear-locked: "&cKit items stay with you: they can't be stored, dropped or given away."
+kit-apple-limit: "&eYou have reached today's limit of {limit} golden apples from kits, so some were left out."
+
+kit-status-ready: "&a✔ Ready to claim"
+kit-status-cooldown: "&eReady in &f{time}"
+kit-status-rank: "&c✘ Unlocks at {rank}"
+kit-status-vip: "&c✘ VIP rank needed"
+kit-status-used: "&8✔ Already claimed"
+
+# ------------------------------------------------------------ pvp
+kill-counted: "You defeated &f{player}&7: &a+{gain} &7rating &8(&f{rating}&8)&7, &a+{points} &7Blossom Points"
+death-counted: "&f{player} &7defeated you: &c-{loss} &7rating &8(&f{rating}&8)"
+kill-not-counted: "&8Your kill on {player} did not count for rating: {reason}"
+reason-data: "progress is not being saved right now"
+reason-world: "kills don't count in this world"
+reason-same-ip: "you are on the same connection"
+reason-teammate: "you are on the same team"
+reason-new-player: "they are too new to the server"
+reason-no-armor: "they were not wearing armour"
+reason-cooldown: "you defeated them a moment ago (counts again in {time})"
+reason-daily-cap: "you two have fought too many times today"
+
+pvp-rank-up: "Your PvP rank is now {rank}&7!"
+pvp-rank-down: "Your PvP rank dropped to {rank}&7."
+pvp-rank-rewards: "{rank} &7reward: &f{rewards}"
+pvp-rank-up-broadcast: "&#F4A9C0⚔ &f{player} &7reached the PvP rank {rank}&7!"
+streak-broadcast: "&#F4A9C0⚔ &f{player} &7is on a &f{streak} &7kill streak!"
+streak-ended-broadcast: "&#F4A9C0⚔ &f{player} &7ended &f{victim}&7's streak of &f{streak}&7!"
+
+season-broadcast: "&#F4A9C0&l✿ PvP season {season} has started! &7Ratings were pulled back and season rewards were handed out."
+season-new: "PvP season &f{season} &7has started. You finished last season as {rank}&7."
+season-rewards: "Season rewards: &f{rewards}"
+
+blocked-mace: "&cMaces don't work on players here. Use a sword or an axe."
+blocked-anchor: "&cRespawn anchors can only be used in the Nether."
+
+# ------------------------------------------------------------ menus
+menu-back: "&f← Back"
+menu-close: "&cClose"
+menu-click-open: "&#F4A9C0Click to open"
+
+menu-main-title: "&8✿ Blossom SMP"
+menu-main-ranks-name: "&#8FCB9B&lRanks"
+menu-main-ranks:
+  - "&7Free ranks you earn by playing."
+  - "&7Every rank unlocks new kits."
+menu-main-kits-name: "&f&lKits"
+menu-main-kits:
+  - "&7Survival, PvP and VIP kits."
+  - ""
+  - "&#F4A9C0Click to open"
+menu-main-pvp-name: "&#F4A9C0&lPvP"
+menu-main-pvp:
+  - "&7Win fights to climb the PvP ranks."
+menu-main-top-name: "&#FFD98A&lTop Players"
+menu-main-top:
+  - "&7The ten best PvP ratings."
+  - ""
+  - "&#F4A9C0Click to open"
+
+menu-ranks-title: "&8✿ Ranks"
+menu-ranks-info-name: "&f&lHow ranks work"
+# {points} = their Blossom Points, {rank} = their rank
+menu-ranks-info:
+  - "&7Your rank: {rank}"
+  - "&7Blossom Points: &f{points}"
+  - ""
+  - "&7Earn Blossom Points by playing,"
+  - "&7mining, fighting monsters and"
+  - "&7winning PvP fights."
+  - ""
+  - "&7Free ranks can't be bought."
+menu-rank-unlocked: "&a✔ Unlocked"
+menu-rank-current: "&#F4A9C0➤ Your rank"
+menu-rank-next: "&e➤ Your next rank"
+menu-rank-locked: "&8✘ Locked"
+menu-rank-requirements: "&fRequirements"
+menu-rank-perks: "&fUnlocks"
+menu-rank-rewards: "&fRewards"
+menu-rank-click: "&aClick to rank up!"
+menu-rank-not-ready: "&7Finish the requirements to rank up"
+menu-vip-owned: "&a✔ You have this rank"
+menu-vip-not-owned: "&7Optional VIP rank"
+menu-vip-fair: "&8Free players can reach every free kit."
+
+menu-kits-title: "&8✿ Kits"
+menu-tab-open: "&a➤ You are here"
+menu-tab-click: "&#F4A9C0Click to open"
+menu-kits-apples-name: "&6Golden apples"
+# {left} = apples they can still get today, {limit} = the daily limit
+menu-kits-apples:
+  - "&7Golden apples from kits are limited"
+  - "&7so fights stay fair."
+  - ""
+  - "&7Left today: &f{left} &7/ &f{limit}"
+menu-kit-contains: "&fInside"
+menu-kit-once: "&7Can be claimed: &fonce"
+menu-kit-cooldown: "&7Cooldown: &f{time}"
+menu-kit-death-reset: "&#F4A9C0✿ &7Ready again when you die"
+menu-kit-max-claims: "&7Most claims: &f{max}"
+menu-kit-left-click: "&#F4A9C0Left-click &7to claim"
+menu-kit-right-click: "&#F4A9C0Right-click &7to look inside"
+menu-preview-claim: "&a&lClaim this kit"
+menu-preview-cant-claim: "&7You can't claim this right now"
+menu-preview-claimed: "&a✔ This kit is already yours"
+
+menu-pvp-title: "&8✿ PvP"
+# {rank} {rating} {next} {kills} {deaths} {kdr} {streak} {best} {position} {season}
+menu-pvp-stats:
+  - "&7PvP rank: {rank}"
+  - "&7Rating: &f{rating}"
+  - "&7Next rank: {next}"
+  - ""
+  - "&7Kills: &f{kills} &8| &7Deaths: &f{deaths} &8| &7K/D: &f{kdr}"
+  - "&7Streak: &f{streak} &8| &7Best: &f{best}"
+  - "&7Leaderboard: &f{position}"
+  - "&7Season: &f{season}"
+menu-pvp-first-time: "&fFirst time each season"
+menu-pvp-season-end: "&fAt the end of the season"
+menu-pvp-rules-name: "&f&lHow PvP works"
+menu-pvp-rules:
+  - "&7Defeat players to win rating."
+  - "&7You lose some rating when you die."
+  - "&7Beating a stronger player pays more."
+  - ""
+  - "&7Swords, axes, shields and bows only:"
+  - "&c✘ &7End crystals"
+  - "&c✘ &7Respawn anchors"
+  - "&c✘ &7Maces"
+  - ""
+  - "&7Kills on the same player, teammates,"
+  - "&7brand new players or players without"
+  - "&7armour don't count."
+
+menu-top-title: "&8✿ Top Players"
+menu-profile-title: "&8✿ {player}"
+menu-profile-stats-name: "&f&lStatistics"
