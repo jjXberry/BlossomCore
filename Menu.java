@@ -70,11 +70,11 @@ public abstract class Menu implements InventoryHolder {
     }
 
     protected ItemStack backButton() {
-        return Items.icon(Material.ARROW, plugin.raw("menu-back"), List.of(), false);
+        return Items.model(Items.icon(Material.ARROW, plugin.raw("menu-back"), List.of(), false), "blossom:icon_back");
     }
 
     protected ItemStack closeButton() {
-        return Items.icon(Material.BARRIER, plugin.raw("menu-close"), List.of(), false);
+        return Items.model(Items.icon(Material.BARRIER, plugin.raw("menu-close"), List.of(), false), "blossom:icon_close");
     }
 
     /** Slots for count things in the row that starts at rowStart (0, 9, 18...). More than 7 uses the next row. */

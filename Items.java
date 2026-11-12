@@ -21,7 +21,24 @@ import java.util.Map;
 /** Builds menu icons and reads kit items from the config. */
 public final class Items {
 
+    /** True when the server sends the Blossom resource pack, so custom icons are safe to use. */
+    public static volatile boolean customModels;
+
     private Items() {
+    }
+
+    /** Gives a menu icon its texture from the Blossom resource pack (only if the pack is in use). */
+    public static ItemStack model(ItemStack item, String model) {
+        if (!customModels || model == null || model.isBlank() || item == null) {
+            return item;
+        }
+        NamespacedKey key = NamespacedKey.fromString(model.contains(":") ? model : "blossom:" + model);
+        ItemMeta meta = item.getItemMeta();
+        if (key != null && meta != null) {
+            meta.setItemModel(key);
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     // ------------------------------------------------------------------ menu icons

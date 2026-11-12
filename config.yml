@@ -20,8 +20,8 @@ store-link: ""
 
 # ------------------------------------------------------------
 # Petals
-# Petals already live in BlossomSettings, so BlossomCore does not keep
-# a second balance. When a reward says "petals: 50", this console command
+# Petals live in BlossomToggles (they used to be in BlossomSettings),
+# so BlossomCore does not keep a second balance. When a reward says "petals: 50", this console command
 # runs. {player} = their name, {amount} = how many.
 # Leave give-command as "" to switch Petal rewards off.
 # ------------------------------------------------------------
@@ -124,6 +124,9 @@ golden-apples:
 # Menus
 # ------------------------------------------------------------
 menus:
+  # Custom icons from the Blossom resource pack.
+  #   auto = on when server.properties has a resource-pack link.  true / false = force.
+  custom-icons: auto
   # Top and bottom rows
   border: PINK_STAINED_GLASS_PANE
   # Everything else
@@ -132,6 +135,7 @@ menus:
   # Extra buttons in the main menu (/blossom). Each one runs a command as the player.
   # Slots count from 0 (top left) to 44 (bottom right). Slots 4, 20, 22, 24 and 40 are taken.
   # command: ""  shows a "coming soon" message instead.
+  # Lore can use PlaceholderAPI placeholders, like %blossomsettings_petals_formatted%.
   links:
     shop:
       enabled: true
@@ -159,7 +163,9 @@ menus:
       icon: PINK_PETALS
       name: "&#F4A9C0&lPetal Shop"
       lore:
-        - "&7Spend your Petals."
+        - "&7Pickaxes, tools and spawners."
+        - "&7You have &#F4A9C0✿ %blossomsettings_petals_formatted% &7Petals"
+        - "&8Earn Petals by playing and fighting."
         - ""
         - "&#F4A9C0Click to open"
       command: "ps"

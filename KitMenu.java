@@ -61,7 +61,11 @@ public final class KitMenu extends Menu {
             List<String> lore = new ArrayList<>(c.description());
             lore.add("");
             lore.add(plugin.raw(c.id().equals(category) ? "menu-tab-open" : "menu-tab-click"));
-            set(tabs[i], Items.icon(c.icon(), c.name(), lore, c.id().equals(category)));
+            String model = switch (c.id()) {
+                case "survival", "pvp", "vip" -> "blossom:icon_kits_" + c.id();
+                default -> "";
+            };
+            set(tabs[i], Items.model(Items.icon(c.icon(), c.name(), lore, c.id().equals(category)), model));
             tabAt.put(tabs[i], c.id());
         }
 
