@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.blossomsmp</groupId>
-    <artifactId>BlossomCore</artifactId>
+    <artifactId>BlossomBiomes</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
@@ -61,7 +61,7 @@
     </dependencies>
 
     <build>
-        <finalName>BlossomCore</finalName>
+        <finalName>BlossomBiomes</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

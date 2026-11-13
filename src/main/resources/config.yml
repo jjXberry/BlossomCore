@@ -1,198 +1,664 @@
 # ============================================================
-#   BlossomCore  -  Blossom SMP
-#   Free ranks, kits, PvP rating and menus.
+#   BlossomBiomes  -  Blossom SMP custom biomes
 # ============================================================
-# Colours: &a, &f, &l ...   Hex colours: &#F4A9C0
-# After editing any file, type:  /blossomcore reload
+# Needs the BlossomBiomes datapack in world/datapacks, and in bukkit.yml:
+#   worlds:
+#     world:
+#       biome-provider: BlossomBiomes
+# Colours: &a, &l ...   Hex: &#F4A9C0
 #
-# Other files in this folder:
-#   ranks.yml     the free ranks and how Blossom Points are earned
-#   kits.yml      every kit
-#   pvp.yml       PvP rating, PvP ranks, anti-abuse, banned PvP styles
-#   messages.yml  every message
+# !!! The "placement" and "sanctuary" settings shape the WORLD. Set them before the
+# !!! world is created and don't change them after, or new land won't line up with old land.
+# Everything else (mobs, loot, messages) can be changed any time: /blossombiomes reload
 
-# How often player progress is saved (minutes). It is also saved when a
-# player leaves, claims a kit, ranks up or gets a counted kill.
-autosave-minutes: 5
+placement:
+  # Blossom biomes start this far from 0,0 (blocks). Closer than this: only vanilla.
+  start-distance: 5000
+  # By this distance they reach full coverage
+  full-distance: 10000
+  # Share of land that becomes a Blossom biome once past full-distance (0.40 = 40%)
+  coverage: 0.40
+  # Rough size of one Blossom area, in blocks
+  patch-size: 900
+  # Rough size of one single biome inside an area (so you see several next to each other)
+  region-size: 650
+  # How often each biome is picked (Frosted Blossom Valley replaces cold land automatically)
+  weights:
+    sakura_forest: 30
+    blossom_meadows: 30
+    emerald_grove: 25
+    moonlight_garden: 15
+  # These vanilla biomes are never replaced (water, beaches, peaks, caves)
+  keep-vanilla: [ocean, deep_ocean, cold_ocean, deep_cold_ocean, frozen_ocean, deep_frozen_ocean,
+                 lukewarm_ocean, deep_lukewarm_ocean, warm_ocean, river, frozen_river, beach, snowy_beach,
+                 stony_shore, mushroom_fields, lush_caves, dripstone_caves, deep_dark,
+                 jagged_peaks, frozen_peaks, stony_peaks]
+  # Cold vanilla land becomes Frosted Blossom Valley
+  cold-biomes: [snowy_plains, ice_spikes, snowy_taiga, snowy_slopes, grove]
 
-# Shown when a player clicks a VIP rank in /ranks. Leave "" if you have no store.
-store-link: ""
+# The super rare Ancient Blossom Sanctuary.
+# The world is cut into squares of cell-size blocks; each square has a "chance" to hold one
+# round sanctuary of "radius" blocks. With these numbers a 100,000 world border holds about
+# 40-60 of them, and the closest is usually 11,000-15,000 blocks from spawn.
+sanctuary:
+  min-distance: 10000
+  cell-size: 8000
+  chance: 0.30
+  radius: 160
+
+# Big text when a player walks into a Blossom biome
+enter-titles: true
+names:
+  sakura_forest: "&#F4A9C0✿ Sakura Forest"
+  blossom_meadows: "&#8FCB9B❀ Blossom Meadows"
+  moonlight_garden: "&#9AA8FF☾ Moonlight Garden"
+  emerald_grove: "&#3FBF62❦ Emerald Grove"
+  frosted_blossom_valley: "&#BFD9FF❄ Frosted Blossom Valley"
+  ancient_blossom_sanctuary: "&#FFD98A&l✦ Ancient Blossom Sanctuary ✦"
+subtitles:
+  sakura_forest: "&7Petals drift on the wind"
+  blossom_meadows: "&7Rolling hills of flowers"
+  moonlight_garden: "&7It glows when the sun goes down"
+  emerald_grove: "&7Giant trees and hidden emeralds"
+  frosted_blossom_valley: "&7Blossoms under the snow"
+  ancient_blossom_sanctuary: "&cAncient guardians watch this place"
+
+# Custom item and menu textures from the Blossom resource pack.
+#   auto  = on when server.properties has a resource-pack link (recommended)
+#   true / false = force on or off
+custom-icons: auto
+
+# How far /biomes looks for the nearest biome before giving up (blocks)
+teleport-search-radius: 30000
+
+# What /biomes says about each biome
+biome-info:
+  sakura_forest:
+    - "&7Thick cherry blossom forest."
+    - "&7Giant sakura trees, torii gates"
+    - "&7and stone lanterns."
+    - "&8Found 5,000+ blocks from spawn"
+  blossom_meadows:
+    - "&7Rolling hills of flowers,"
+    - "&7lone cherry trees and beehives."
+    - "&8Found 5,000+ blocks from spawn"
+  moonlight_garden:
+    - "&7A garden that glows at night:"
+    - "&7crystal spires, moonstones,"
+    - "&7fireflies and glowing moss."
+    - "&8Found 5,000+ blocks from spawn"
+  emerald_grove:
+    - "&7Giant jungle trees, mossy rocks"
+    - "&7and lots of emerald ore."
+    - "&8Found 5,000+ blocks from spawn"
+  frosted_blossom_valley:
+    - "&7Cherry trees in the snow,"
+    - "&7frozen lakes and ice spikes."
+    - "&8Replaces cold land past 5,000 blocks"
+  ancient_blossom_sanctuary:
+    - "&#FFD98ASuper rare."
+    - "&7Ancient guardians protect a shrine"
+    - "&7full of legendary treasure."
+    - "&8Only 10,000+ blocks from spawn"
+
+# Builds that generate in the biomes: chance per chunk (0 to 1). Only affects NEW land.
+decorations:
+  enabled: true
+  sakura_forest:
+    giant-sakura: 0.22
+    torii-gate: 0.04
+    stone-lantern: 0.12
+    fallen-log: 0.12
+  blossom_meadows:
+    boulder: 0.10
+    stone-lantern: 0.06
+    beehive-post: 0.07
+    giant-sakura: 0.03
+  moonlight_garden:
+    crystal-spire: 0.18
+    moonstones: 0.25
+    glow-moss: 0.5
+    soul-lantern: 0.08
+  emerald_grove:
+    boulder: 0.25
+    fallen-log: 0.25
+    glow-moss: 0.15
+  frosted_blossom_valley:
+    giant-sakura: 0.14
+    ice-spike: 0.15
+    stone-lantern: 0.06
+  ancient_blossom_sanctuary:
+    broken-pillar: 0.45
+    torchflowers: 0.35
+    soul-lantern: 0.15
+
+# The command that gives Petals ({player}, {amount}). "" = no Petals.
+petals-command: "petals give {player} {amount}"
 
 # ------------------------------------------------------------
-# Petals
-# Petals live in BlossomToggles (they used to be in BlossomSettings),
-# so BlossomCore does not keep a second balance. When a reward says "petals: 50", this console command
-# runs. {player} = their name, {amount} = how many.
-# Leave give-command as "" to switch Petal rewards off.
+# Every monster that spawns naturally in the Sanctuary becomes an elite
 # ------------------------------------------------------------
-petals:
-  name: "Petals"
-  give-command: "petals give {player} {amount}"
-
-ranks:
-  # Tell the whole server when someone ranks up
-  broadcast: true
-
-pvp:
-  # Tell the whole server when someone reaches a new PvP rank
-  broadcast-rank-ups: true
-
-# ------------------------------------------------------------
-# New players
-# ------------------------------------------------------------
-welcome:
-  # Tell everyone online that a new player joined
-  broadcast: true
-  # Open a menu a few seconds after their first join that shows the Starter Kit
-  open-starter-menu: true
-  # Players who were on the server BEFORE BlossomCore was installed already
-  # had a starter kit, so they don't get another one. true = give it anyway.
-  starter-kit-for-existing-players: false
+elites:
+  enabled: true
+  name: "&#E27D9CAncient {mob}"
+  health-multiplier: 2.5
+  damage-multiplier: 1.6
+  speed-multiplier: 1.15
+  armor: 6
+  bonus-xp: 20
+  petals: 15
+  # chance is in % per kill. Items are written like in BlossomCore's kits.yml.
+  drops:
+    - {item: "EMERALD 2", chance: 25}
+    - {item: "DIAMOND 1", chance: 10}
+    - {item: "GOLDEN_APPLE 1", chance: 5}
+    - {item: "NETHERITE_SCRAP 1", chance: 2}
 
 # ------------------------------------------------------------
-# Kit limits (these protect the balance of every kit in kits.yml)
+# Shrine guardians: they appear when someone first opens a shrine chest.
+# The chest stays shut until every guardian is dead.
 # ------------------------------------------------------------
-kits:
-  # Seconds after hitting (or being hit by) a player before a kit can be claimed.
-  # Stops people re-gearing in the middle of a fight.
-  block-after-pvp-seconds: 20
+guardians:
+  count: 5
+  bonus-xp: 60
+  petals: 150
+  drops:
+    - {item: "DIAMOND 2", chance: 50}
+    - {item: "NETHERITE_SCRAP 1", chance: 15}
+    - {item: "ENCHANTED_GOLDEN_APPLE 1", chance: 3}
+  types:
+    - entity: WITHER_SKELETON
+      name: "&#E27D9C&lSanctuary Knight"
+      weight: 3
+      health: 120
+      damage: 16
+      speed: 0.3
+      armor: 14
+      knockback-resistance: 0.6
+      main-hand: "NETHERITE_SWORD 1 sharpness:5 fire_aspect:2"
+      helmet: "NETHERITE_HELMET 1 protection:4"
+      chestplate: "NETHERITE_CHESTPLATE 1 protection:4"
+    - entity: SKELETON
+      name: "&#F4A9C0&lPetal Archer"
+      weight: 3
+      health: 80
+      speed: 0.3
+      armor: 10
+      main-hand: "BOW 1 power:5 punch:2 flame:1"
+      helmet: "DIAMOND_HELMET 1 protection:4"
+      chestplate: "DIAMOND_CHESTPLATE 1 protection:3"
+    - entity: ZOMBIE
+      name: "&#9AA8FF&lBlossom Revenant"
+      weight: 2
+      health: 100
+      damage: 14
+      speed: 0.32
+      armor: 12
+      knockback-resistance: 0.4
+      main-hand: "NETHERITE_AXE 1 sharpness:4"
+      helmet: "NETHERITE_HELMET 1 protection:3"
+      leggings: "NETHERITE_LEGGINGS 1 protection:3"
+    - entity: VINDICATOR
+      name: "&#FFD98A&lAncient Warden"
+      weight: 1
+      health: 160
+      damage: 20
+      speed: 0.33
+      armor: 16
+      knockback-resistance: 0.8
+      main-hand: "NETHERITE_AXE 1 sharpness:5"
 
-  # Tag weapons, tools and armour from kits, and add this line under the item name.
-  # ("" = tag them without showing a line.)
-  mark-gear: true
-  gear-lore: "&8Kit item"
+# ------------------------------------------------------------
+# What a shrine chest holds (filled once, when the guardians are beaten)
+# ------------------------------------------------------------
+shrine-loot:
+  # Always in the chest
+  always:
+    - "ENCHANTED_GOLDEN_APPLE 1"
+    - "NETHERITE_INGOT 2"
+    - item: "PINK_PETALS 1"
+      name: "&#FFD98A&lEternal Petal"
+      model: blossom:eternal_petal
+      lore: ["&#FFD98AMythic", "&7A petal from the first tree.", "&7It never wilts."]
+      glow: true
+  # Extra random picks (higher weight = more common)
+  rolls: 5
+  random:
+    - item: "NETHERITE_SWORD 1 sharpness:5 unbreaking:3 mending:1 fire_aspect:2 looting:3 sweeping_edge:3"
+      name: "&#FFD98A&lEternal Blossom Blade"
+      model: blossom:eternal_blossom_blade
+      lore: ["&#FFD98AMythic", "&7Forged where the first blossom fell."]
+      weight: 2
+    - item: "NETHERITE_SWORD 1 sharpness:5 unbreaking:3 mending:1 knockback:2"
+      name: "&#F4A9C0&lSakura Katana"
+      model: blossom:sakura_katana
+      lore: ["&#E27D9CLegendary"]
+      weight: 3
+    - item: "BOW 1 power:5 punch:2 flame:1 infinity:1 unbreaking:3"
+      name: "&#F4A9C0&lPetal Bow"
+      model: blossom:petal_bow
+      lore: ["&#E27D9CLegendary"]
+      weight: 4
+    - item: "NETHERITE_PICKAXE 1 efficiency:5 fortune:3 unbreaking:3 mending:1"
+      name: "&#3FBF62&lEmerald Blossom Pickaxe"
+      model: blossom:emerald_blossom_pickaxe
+      lore: ["&#E27D9CLegendary"]
+      weight: 4
+    - item: "SHIELD 1 unbreaking:3 mending:1"
+      name: "&#9AA8FF&lGuardian's Shield"
+      lore: ["&#B48CFFEpic"]
+      weight: 4
+    - item: "NETHERITE_HELMET 1 protection:4 unbreaking:3 mending:1"
+      name: "&#F4A9C0Sanctuary Crown"
+      model: blossom:sanctuary_crown
+      lore: ["&#B48CFFEpic"]
+      weight: 3
+    - item: "NETHERITE_CHESTPLATE 1 protection:4 unbreaking:3 mending:1"
+      name: "&#F4A9C0Sanctuary Guard"
+      model: blossom:sanctuary_guard
+      lore: ["&#B48CFFEpic"]
+      weight: 3
+    - item: "NETHERITE_LEGGINGS 1 protection:4 unbreaking:3 mending:1"
+      name: "&#F4A9C0Sanctuary Greaves"
+      model: blossom:sanctuary_greaves
+      lore: ["&#B48CFFEpic"]
+      weight: 3
+    - item: "NETHERITE_BOOTS 1 protection:4 feather_falling:4 unbreaking:3 mending:1"
+      name: "&#F4A9C0Sanctuary Treads"
+      model: blossom:sanctuary_treads
+      lore: ["&#B48CFFEpic"]
+      weight: 3
+    - item: "AMETHYST_SHARD 1"
+      name: "&#9AA8FF&lMoonlight Crystal"
+      model: blossom:moonlight_crystal
+      lore: ["&#E27D9CLegendary", "&7Still cold from the night sky."]
+      glow: true
+      weight: 4
+    - {item: "ELYTRA 1", weight: 2}
+    - {item: "TOTEM_OF_UNDYING 1", weight: 4}
+    - {item: "ENCHANTED_GOLDEN_APPLE 2", weight: 3}
+    - {item: "NETHERITE_INGOT 2", weight: 5}
+    - {item: "NETHERITE_UPGRADE_SMITHING_TEMPLATE 2", weight: 5}
+    - {item: "DIAMOND_BLOCK 4", weight: 6}
+    - {item: "TRIDENT 1 loyalty:3 impaling:5 unbreaking:3", weight: 2}
+  # Console commands when someone claims a shrine ({player} = their name)
+  commands:
+    - "petals give {player} 2500"
 
-  # Dying makes your kits claimable again (cooldowns are cleared).
-  #   all-kits: true  = every kit, VIP and Netherite too
-  #   all-kits: false = only kits with "reset-on-death: true" in kits.yml
-  # A single kit can also opt out with "reset-on-death: false".
-  # The golden apple daily limit below still applies.
-  death-reset:
+# The command that gives money ({player}, {amount}). "" = no money.
+money-command: "eco give {player} {amount}"
+
+# BlossomQuests: discovering biomes, gathering materials and beating biome bosses count for
+# its quests and achievements (needs BlossomQuests 1.1.0 or newer). auto / true / false
+quests-hook: auto
+
+# ============================================================
+#   DISCOVERY: rewards the first time a player walks into each biome
+# ============================================================
+discovery:
+  enabled: true
+  rewards:
+    sakura_forest: {money: 1000, petals: 100}
+    blossom_meadows: {money: 1000, petals: 100}
+    moonlight_garden: {money: 1500, petals: 150}
+    emerald_grove: {money: 1000, petals: 100}
+    frosted_blossom_valley: {money: 1000, petals: 100}
+    ancient_blossom_sanctuary: {money: 5000, petals: 500}
+  # Tell the whole server when someone finds the Sanctuary for the first time
+  broadcast-sanctuary: true
+  # Finding all six
+  all-found:
+    money: 15000
+    petals: 1500
+    items: ["DIAMOND 16", "material:ancient_relic 2", "GOLDEN_APPLE 8"]
+    # Console commands, e.g. a LuckPerms tag: "lp user {player} permission set blossom.tag.explorer"
+    commands: []
+    broadcast: true
+
+# ============================================================
+#   BIOME MATERIALS: each biome drops its own material
+# ============================================================
+# blocks: block -> % chance per block broken (#tag = a Minecraft block tag)
+# mob-chance: % chance when you kill a monster in that biome
+# price: what the Blossom Trader in /biomes pays for one
+# Blocks that players placed themselves never drop materials.
+materials:
+  sakura_petal:
+    name: "&#F4A9C0Sakura Petal"
+    item: PINK_DYE
+    biomes: [sakura_forest]
+    blocks: {CHERRY_LEAVES: 5, PINK_PETALS: 10}
+    mob-chance: 6
+    price: 25
+  blossom_nectar:
+    name: "&#F7D774Blossom Nectar"
+    item: HONEYCOMB
+    biomes: [blossom_meadows]
+    blocks: {"#small_flowers": 6, BEEHIVE: 40, CHERRY_LEAVES: 3}
+    mob-chance: 6
+    price: 25
+  moonstone:
+    name: "&#9AA8FFMoonstone"
+    item: PRISMARINE_CRYSTALS
+    biomes: [moonlight_garden]
+    blocks: {PEARLESCENT_FROGLIGHT: 50, AMETHYST_CLUSTER: 25, LARGE_AMETHYST_BUD: 12, AZALEA_LEAVES: 2, FLOWERING_AZALEA_LEAVES: 4, PALE_OAK_LEAVES: 2}
+    mob-chance: 8
+    price: 50
+  verdant_leaf:
+    name: "&#3FBF62Verdant Leaf"
+    item: LIME_DYE
+    biomes: [emerald_grove]
+    blocks: {JUNGLE_LEAVES: 3, EMERALD_ORE: 30, DEEPSLATE_EMERALD_ORE: 30, MOSS_CARPET: 6, VINE: 2}
+    mob-chance: 6
+    price: 30
+  frost_blossom:
+    name: "&#BFD9FFFrost Blossom"
+    item: LIGHT_BLUE_DYE
+    biomes: [frosted_blossom_valley]
+    blocks: {CHERRY_LEAVES: 6, ICE: 8, PACKED_ICE: 8, BLUE_ICE: 15}
+    mob-chance: 6
+    price: 35
+  ancient_relic:
+    name: "&#FFD98A&lAncient Relic"
+    item: GOLD_NUGGET
+    biomes: [ancient_blossom_sanctuary]
+    blocks: {}
+    mob-chance: 12
+    # Every shrine guardian drops this many
+    guardian-drop: 2
+    price: 400
+
+# Boss charms are made at the Blossom Trader from a biome's material.
+# Right-click one inside that biome to wake its boss.
+charm-cost: 32
+
+# ============================================================
+#   BIOME BOSSES: one for each biome (the Sanctuary has its shrine guardians)
+# ============================================================
+bosses:
+  enabled: true
+  # Bosses wake up by themselves near players exploring Blossom biomes
+  natural-spawn:
     enabled: true
-    all-kits: true
+    every-minutes: 30
+    chance: 60
+    max-awake: 2
+    # How far from the player it appears (blocks)
+    min-distance: 24
+    max-distance: 40
+  # A boss with nobody within 64 blocks for this long goes back to sleep (no rewards)
+  sleep-after-seconds: 300
+  # A boss pulled further than this from where it woke up jumps back
+  leash: 40
+  # Players this close see the health bar
+  bar-range: 60
+  # Rewards go to everyone who did at least this % of the damage
+  min-damage-share: 10
+  # Tell the whole server when a boss wakes up and when it's beaten
+  broadcast: true
+  types:
+    ronin:
+      biome: sakura_forest
+      name: "&#F4A9C0&l✿ Ronin of Falling Petals"
+      entity: ZOMBIE
+      glow: light_purple
+      bar-color: PINK
+      particle: CHERRY_LEAVES
+      scale: 1.3
+      health: 300
+      damage: 9
+      armor: 8
+      speed: 0.3
+      knockback-resistance: 0.6
+      gear:
+        main-hand: "IRON_SWORD 1"
+        helmet: {item: "LEATHER_HELMET 1", color: "#F4A9C0"}
+        chestplate: {item: "LEATHER_CHESTPLATE 1", color: "#F4A9C0"}
+        leggings: {item: "LEATHER_LEGGINGS 1", color: "#2B2B2B"}
+        boots: {item: "LEATHER_BOOTS 1", color: "#2B2B2B"}
+      every-seconds: 6
+      abilities:
+        - {type: dash, name: "Petal Dash", damage: 7}
+        - {type: nova, name: "Petal Storm", radius: 6, damage: 5, effect: WITHER, level: 1, seconds: 4, particle: CHERRY_LEAVES}
+        - {type: summon, name: "Petal Shades", entity: ZOMBIE, count: 2, minion-name: "&#F4A9C0Petal Shade", health: 30}
+      rewards: {money: 3000, petals: 150, xp: 150}
+      loot:
+        always: ["material:sakura_petal 12"]
+        rolls: 2
+        random:
+          - {item: "DIAMOND 3", weight: 6}
+          - {item: "GOLDEN_APPLE 2", weight: 5}
+          - {item: "EXPERIENCE_BOTTLE 16", weight: 5}
+          - {item: "ENCHANTED_BOOK 1 sharpness:4", weight: 3}
+          - item: "DIAMOND_SWORD 1 sharpness:4 unbreaking:3"
+            name: "&#F4A9C0Ronin's Blade"
+            lore: ["&#B48CFFRare", "&7Still smells of cherry blossom."]
+            weight: 2
+          - item: "DIAMOND_HELMET 1 protection:3 unbreaking:3"
+            name: "&#F4A9C0Ronin's Kabuto"
+            lore: ["&#B48CFFRare"]
+            weight: 2
+    bramblehorn:
+      biome: blossom_meadows
+      name: "&#8FCB9B&l❀ Bramblehorn"
+      entity: RAVAGER
+      glow: green
+      bar-color: GREEN
+      particle: SPORE_BLOSSOM_AIR
+      scale: 1.1
+      health: 360
+      damage: 10
+      armor: 10
+      speed: 0.3
+      knockback-resistance: 1.0
+      every-seconds: 7
+      abilities:
+        - {type: shockwave, name: "Stampede", radius: 6, damage: 7}
+        - {type: roots, name: "Bramble Snare", radius: 4, damage: 3, seconds: 3}
+        - {type: summon, name: "Angry Swarm", entity: BEE, count: 3, minion-name: "&#F7D774Meadow Bee", health: 12}
+      rewards: {money: 3000, petals: 150, xp: 150}
+      loot:
+        always: ["material:blossom_nectar 12"]
+        rolls: 2
+        random:
+          - {item: "DIAMOND 3", weight: 6}
+          - {item: "GOLDEN_APPLE 2", weight: 5}
+          - {item: "HONEY_BOTTLE 8", weight: 4}
+          - {item: "ENCHANTED_BOOK 1 protection:3", weight: 3}
+          - item: "DIAMOND_BOOTS 1 protection:2 feather_falling:4 unbreaking:3"
+            name: "&#8FCB9BMeadowstrider Boots"
+            lore: ["&#B48CFFRare", "&7Light as a falling petal."]
+            weight: 2
+          - item: "SADDLE 1"
+            weight: 3
+    moon_sorceress:
+      biome: moonlight_garden
+      name: "&#9AA8FF&l☾ Moonlit Sorceress"
+      entity: EVOKER
+      glow: aqua
+      bar-color: BLUE
+      particle: END_ROD
+      scale: 1.4
+      health: 260
+      damage: 8
+      armor: 6
+      speed: 0.35
+      knockback-resistance: 0.5
+      # Only wakes by itself at night
+      night-only: true
+      every-seconds: 5
+      abilities:
+        - {type: beam, name: "Moonbeam", damage: 8}
+        - {type: blink, name: "Moonstep"}
+        - {type: nova, name: "Starfall", radius: 7, damage: 4, effect: BLINDNESS, level: 1, seconds: 3, particle: END_ROD}
+      rewards: {money: 3500, petals: 175, xp: 175}
+      loot:
+        always: ["material:moonstone 8"]
+        rolls: 2
+        random:
+          - {item: "DIAMOND 3", weight: 6}
+          - {item: "GOLDEN_APPLE 2", weight: 5}
+          - {item: "ENDER_PEARL 8", weight: 4}
+          - {item: "ENCHANTED_BOOK 1 efficiency:4", weight: 3}
+          - item: "BOW 1 power:4 unbreaking:3"
+            name: "&#9AA8FFMoonlit Bow"
+            lore: ["&#B48CFFRare", "&7Its string glows faintly."]
+            weight: 2
+          - item: "DIAMOND_HELMET 1 protection:2 respiration:3 aqua_affinity:1 unbreaking:3"
+            name: "&#9AA8FFMoonweave Hood"
+            lore: ["&#B48CFFRare"]
+            weight: 2
+    emerald_warlord:
+      biome: emerald_grove
+      name: "&#3FBF62&l❦ Emerald Warlord"
+      entity: VINDICATOR
+      glow: dark_green
+      bar-color: GREEN
+      particle: HAPPY_VILLAGER
+      scale: 1.35
+      health: 320
+      damage: 11
+      armor: 10
+      speed: 0.32
+      knockback-resistance: 0.7
+      gear:
+        main-hand: "IRON_AXE 1"
+        helmet: {item: "LEATHER_HELMET 1", color: "#3FBF62"}
+      every-seconds: 6
+      abilities:
+        - {type: pull, name: "Vine Lash", radius: 14, damage: 3}
+        - {type: cloud, name: "Spore Cloud", effect: POISON, level: 1, seconds: 5}
+        - {type: summon, name: "Grove Crawlers", entity: SPIDER, count: 2, minion-name: "&#3FBF62Grove Crawler", health: 24}
+      rewards: {money: 3000, petals: 150, xp: 150}
+      loot:
+        always: ["material:verdant_leaf 12", "EMERALD 8"]
+        rolls: 2
+        random:
+          - {item: "DIAMOND 3", weight: 6}
+          - {item: "GOLDEN_APPLE 2", weight: 5}
+          - {item: "EMERALD 16", weight: 5}
+          - {item: "ENCHANTED_BOOK 1 unbreaking:3", weight: 3}
+          - item: "DIAMOND_AXE 1 sharpness:3 efficiency:4 unbreaking:3"
+            name: "&#3FBF62Warlord's Cleaver"
+            lore: ["&#B48CFFRare", "&7Notched from a hundred battles."]
+            weight: 2
+          - item: "DIAMOND_LEGGINGS 1 protection:3 unbreaking:3"
+            name: "&#3FBF62Grovewarden Greaves"
+            lore: ["&#B48CFFRare"]
+            weight: 2
+    frostmaw:
+      biome: frosted_blossom_valley
+      name: "&#BFD9FF&l❄ Frostmaw"
+      entity: POLAR_BEAR
+      glow: white
+      bar-color: WHITE
+      particle: SNOWFLAKE
+      scale: 1.8
+      health: 380
+      damage: 11
+      armor: 8
+      speed: 0.3
+      knockback-resistance: 0.9
+      every-seconds: 6
+      abilities:
+        - {type: nova, name: "Frost Roar", radius: 7, damage: 5, effect: SLOWNESS, level: 2, seconds: 4, freeze: true, particle: SNOWFLAKE}
+        - {type: shockwave, name: "Avalanche Slam", radius: 6, damage: 7}
+        - {type: summon, name: "Frozen Thralls", entity: STRAY, count: 2, minion-name: "&#BFD9FFFrozen Thrall", health: 26}
+      rewards: {money: 3500, petals: 175, xp: 175}
+      loot:
+        always: ["material:frost_blossom 12"]
+        rolls: 2
+        random:
+          - {item: "DIAMOND 3", weight: 6}
+          - {item: "GOLDEN_APPLE 2", weight: 5}
+          - {item: "BLUE_ICE 16", weight: 3}
+          - {item: "ENCHANTED_BOOK 1 feather_falling:4", weight: 3}
+          - item: "DIAMOND_CHESTPLATE 1 protection:3 unbreaking:3"
+            name: "&#BFD9FFFrostmaw Pelt"
+            lore: ["&#B48CFFRare", "&7Warm, somehow."]
+            weight: 2
+          - item: "DIAMOND_BOOTS 1 frost_walker:2 protection:2 unbreaking:3"
+            name: "&#BFD9FFGlacier Treads"
+            lore: ["&#B48CFFRare"]
+            weight: 2
 
-  # Kit gear stays with the player who claimed it. KEEP BOTH ON while death-reset
-  # is on, or players can collect endless kit gear by dying on purpose.
-  kit-gear:
-    # Can't be put in chests, ender chests, shulkers, hoppers, bundles, item frames
-    # or armour stands, and can't be dropped or given away. /sell's chest refuses it too.
-    locked: true
-    # Is deleted when its owner dies, so the killer can't loot it (works with keepInventory too)
-    vanish-on-death: true
-    # Weapons, tools and armour are always kit gear. These stackable items are too:
-    also-mark:
-      - GOLDEN_APPLE
-      - ENDER_PEARL
-
-  # Items that can never be put in a kit, even by mistake.
-  banned-items:
-    - END_CRYSTAL
-    - RESPAWN_ANCHOR
-    - MACE
-    - ENCHANTED_GOLDEN_APPLE
-    - TOTEM_OF_UNDYING
-
-  # The highest enchantment level a kit item may have. Anything higher in
-  # kits.yml is lowered to this and the console tells you.
-  # Use the Minecraft name of the enchantment. "default" is for all the others.
-  max-enchant-levels:
-    default: 3
-    sharpness: 3
-    protection: 3
-    power: 3
-    unbreaking: 3
-    knockback: 1
-    punch: 1
-    fire_aspect: 1
-    flame: 1
-    infinity: 0
-    thorns: 0
-    mending: 0
-
-# ------------------------------------------------------------
-# Golden apples
-# ------------------------------------------------------------
-golden-apples:
-  # Most golden apples one kit may hold
-  max-per-kit: 6
-  # Most golden apples one player can get from ALL kits in one day.
-  # When they hit the limit the kit still works, just without the apples.
-  # 0 = no daily limit.
-  max-per-day-from-kits: 12
-
-# ------------------------------------------------------------
-# Menus
-# ------------------------------------------------------------
-menus:
-  # Top and bottom rows
-  border: PINK_STAINED_GLASS_PANE
-  # Everything else
-  filler: GRAY_STAINED_GLASS_PANE
-
-  # Extra buttons in the main menu (/blossom). Each one runs a command as the player.
-  # Slots count from 0 (top left) to 44 (bottom right). Slots 4, 20, 22, 24 and 40 are taken.
-  # command: ""  shows a "coming soon" message instead.
-  # Lore can use PlaceholderAPI placeholders, like %blossomsettings_petals_formatted%.
-  links:
-    shop:
-      enabled: true
-      slot: 29
-      icon: EMERALD
-      name: "&#8FCB9B&lShop"
-      lore:
-        - "&7Buy and sell items."
-        - ""
-        - "&#F4A9C0Click to open"
-      command: "shop"
-    teams:
-      enabled: true
-      slot: 31
-      icon: WHITE_BANNER
-      name: "&f&lTeams"
-      lore:
-        - "&7Make a team with your friends."
-        - ""
-        - "&#F4A9C0Click to open"
-      command: "team"
-    petalshop:
-      enabled: true
-      slot: 33
-      icon: PINK_PETALS
-      name: "&#F4A9C0&lPetal Shop"
-      lore:
-        - "&7Pickaxes, tools and spawners."
-        - "&7You have &#F4A9C0✿ %blossomsettings_petals_formatted% &7Petals"
-        - "&8Earn Petals by playing and fighting."
-        - ""
-        - "&#F4A9C0Click to open"
-      command: "ps"
-    quests:
-      enabled: false
-      slot: 38
-      icon: WRITABLE_BOOK
-      name: "&f&lQuests"
-      lore:
-        - "&7Daily, weekly and story quests."
-        - ""
-        - "&8Coming soon"
-      command: ""
-    events:
-      enabled: false
-      slot: 42
-      icon: FIREWORK_ROCKET
-      name: "&f&lEvents"
-      lore:
-        - "&7Festivals, hunts and tournaments."
-        - ""
-        - "&8Coming soon"
-      command: ""
-
-# ------------------------------------------------------------
-# Sounds (Minecraft sound names, "" = no sound)
-# ------------------------------------------------------------
-sounds:
-  click: "ui.button.click"
-  denied: "block.note_block.bass"
-  kit: "entity.item.pickup"
-  ready: "entity.experience_orb.pickup"
-  rank-up: "ui.toast.challenge_complete"
+messages:
+  prefix: "&#F4A9C0&l✿ &8» &7"
+  no-permission: "&cYou don't have permission to do that."
+  players-only: "&cOnly players can use this."
+  reloaded: "&aBlossomBiomes reloaded. &7(Placement changes only apply after a restart, and only to new land.)"
+  biome-here: "You are in {biome}&7."
+  where: "Biome: {biome} &8| &7Distance from spawn: &f{distance} &7blocks"
+  not-blossom-world: "&cThis world doesn't use Blossom biomes."
+  no-sanctuary: "&cNo sanctuary nearby."
+  nearest-sanctuary: "Nearest sanctuary: &f{x}, {z} &8(&f{distance} &7blocks away&8)"
+  shrine-count: "Shrines found so far: &f{total} &8(&7sealed &f{sealed}&8, &7awake &f{awake}&8, &7claimed &f{claimed}&8)"
+  shrine-awakened: "&#E27D9C&lThe sanctuary awakens! &7Defeat its &f{count} &7guardians to open the shrine."
+  shrine-guarded: "&cThe shrine is sealed while &f{count} &cguardian(s) still stand."
+  shrine-claimed: "&#FFD98A&lThe shrine opens! &7Its treasure is yours."
+  shrine-claimed-broadcast: "&#FFD98A✦ &f{player} &7claimed the treasure of an &#FFD98AAncient Blossom Sanctuary&7!"
+  shrine-unbreakable: "&cThe shrine's magic holds it in place."
+  shrine-removed: "&7Shrine removed."
+  menu-title: "&8✿ Blossom Biomes"
+  menu-close: "&cClose"
+  menu-info-name: "&f&lThe Blossom biomes"
+  menu-info:
+    - "&7Six biomes you won't find anywhere else."
+    - "&7Discover each one for a reward, gather"
+    - "&7its material and beat its boss."
+    - "&7They start &f5,000 blocks &7from spawn."
+    - "&7Type &f/biome &7to see where you are."
+  menu-click-teleport: "&#F4A9C0Click to teleport to the nearest one"
+  menu-explore: "&7Go exploring to find it!"
+  menu-no-teleport: "&cOnly staff can teleport. Go exploring to find it!"
+  searching: "Looking for the nearest {biome}&7..."
+  not-found: "&cNo {biome} &cwithin {radius} blocks."
+  teleported: "Welcome to {biome}&7! &8({x}, {z})"
+  unknown-biome: "&cThere is no Blossom biome called &f{biome}&c."
+  discovered: "&#FFD98A&l✦ New biome discovered! &7{biome} &8(&f{count}&7/&f6&8)"
+  discovered-title: "&#FFD98A&l✦ Discovered! ✦"
+  discovered-reward: "&7Reward: {reward}"
+  discovered-sanctuary-broadcast: "&#FFD98A✦ &f{player} &7found an &#FFD98AAncient Blossom Sanctuary&7!"
+  all-discovered: "&#FFD98A&l✦ You found every Blossom biome! &7Reward: {reward}"
+  all-discovered-broadcast: "&#FFD98A✦ &f{player} &7has discovered &fevery &7Blossom biome! &#FFD98A&lBlossom Explorer"
+  material-found: "&7+1 {material}"
+  boss-awake-broadcast: "&#E27D9C⚔ {boss} &7has woken in the {biome} &7near &f{x}, {z}&7!"
+  boss-awake-near: "&c&l⚔ A boss has woken up! ⚔"
+  boss-enraged: "{boss} &c&lis enraged!"
+  boss-ability: "{boss} &7uses &f{ability}&7!"
+  boss-slept: "{boss} &7went back to sleep."
+  boss-defeated-broadcast: "&#FFD98A⚔ {boss} &7was defeated by &f{players}&7!"
+  boss-reward: "&#FFD98A&lBoss defeated! &7You earned {reward}"
+  boss-too-little: "&7You didn't do enough damage to {boss} &7for a reward."
+  boss-already-awake: "&c{boss} &cis already awake somewhere."
+  charm-wrong-biome: "&cThis charm only works in the {biome}&c."
+  charm-used: "&7The charm crumbles... {boss} &7wakes up!"
+  charm-no-space: "&cThere's no room for the boss here. Try somewhere more open."
+  trader-title: "&8✿ Blossom Trader"
+  trader-sold: "&aSold &f{amount}x {material} &afor &f${money}&a."
+  trader-sold-all: "&aSold all your Blossom materials for &f${money}&a."
+  trader-nothing: "&cYou don't have any to sell."
+  trader-not-enough: "&cYou need &f{cost}x {material} &cfor this charm."
+  trader-charm-made: "&aYou made a {charm}&a!"
+  no-money-command: "&cThe trader is closed: money-command is empty in config.yml."
+  bosses-disabled: "&cBiome bosses are turned off."
+  unknown-boss: "&cThere is no boss called &f{boss}&c. Bosses: &f{list}"
+  boss-spawned: "&aWoke up {boss}&a."
+  boss-removed: "&7Removed &f{count} &7boss(es)."
+  given: "&aGave &f{player} {amount}x {item}&a."
+  unknown-item: "&cUnknown item. Use a material ({materials}) or charm:<boss>."
+  discoveries-reset: "&aReset &f{player}&a's discovered biomes."
+  admin-help:
+    - "&#F4A9C0&l✿ BlossomBiomes"
+    - " &f/biome &8- &7which biome you're in (everyone)"
+    - " &f/biomes &8- &7the biomes menu; staff can click to teleport"
+    - " &f/biomes <biome> &8- &7teleport to the nearest one (staff)"
+    - " &f/blossombiomes where &8- &7biome and distance from spawn"
+    - " &f/blossombiomes sanctuary &8- &7coordinates of the nearest sanctuary"
+    - " &f/blossombiomes shrines &8- &7how many shrines exist and are claimed"
+    - " &f/blossombiomes boss spawn <boss> &8- &7wake a boss where you stand"
+    - " &f/blossombiomes boss kill [boss|all] &8- &7remove bosses (no rewards)"
+    - " &f/blossombiomes boss list &8- &7which bosses are awake"
+    - " &f/blossombiomes give <player> <material|charm:boss> [amount]"
+    - " &f/blossombiomes resetdiscover <player> &8- &7forget their discovered biomes"
+    - " &f/blossombiomes reload &8- &7reload mobs, loot and messages"
