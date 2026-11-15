@@ -159,6 +159,10 @@ public final class BlossomCore extends JavaPlugin {
         pvp.load(pvpFile);
         kits.load(kitsFile); // after ranks: kits check that their required rank exists
         money = null;        // look the economy up again
+        // custom menu icons from the Blossom resource pack: auto = on when server.properties has a pack link
+        String icons = String.valueOf(getConfig().getString("menus.custom-icons", "auto")).toLowerCase(java.util.Locale.ROOT);
+        com.blossomsmp.core.util.Items.customModels = icons.equals("true")
+                || (!icons.equals("false") && !getServer().getResourcePack().isBlank());
         return problems;
     }
 

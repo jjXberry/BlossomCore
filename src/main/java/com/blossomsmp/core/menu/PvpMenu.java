@@ -91,7 +91,7 @@ public final class PvpMenu extends Menu {
         }
 
         set(BACK, backButton());
-        set(TOP, Items.icon(Material.NETHER_STAR, plugin.raw("menu-main-top-name"), plugin.rawList("menu-main-top"), false));
+        set(TOP, Items.model(Items.icon(Material.NETHER_STAR, plugin.raw("menu-main-top-name"), plugin.rawList("menu-main-top"), false), "blossom:icon_top"));
         set(RULES, Items.icon(Material.BOOK, plugin.raw("menu-pvp-rules-name"), plugin.rawList("menu-pvp-rules"), false));
     }
 

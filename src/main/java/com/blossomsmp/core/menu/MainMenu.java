@@ -51,17 +51,17 @@ public final class MainMenu extends Menu {
         rankLore.add("");
         rankLore.add("&7Your rank: " + rank.name());
         rankLore.add(next == null ? plugin.raw("max-rank") : "&7Next: " + next.name());
-        set(RANKS, Items.icon(rank.icon(), plugin.raw("menu-main-ranks-name"), rankLore, false));
+        set(RANKS, Items.model(Items.icon(rank.icon(), plugin.raw("menu-main-ranks-name"), rankLore, false), "blossom:icon_ranks"));
 
-        set(KITS, Items.icon(Material.CHEST, plugin.raw("menu-main-kits-name"), plugin.rawList("menu-main-kits"), false));
+        set(KITS, Items.model(Items.icon(Material.CHEST, plugin.raw("menu-main-kits-name"), plugin.rawList("menu-main-kits"), false), "blossom:icon_kits"));
 
         List<String> pvpLore = new ArrayList<>(plugin.rawList("menu-main-pvp"));
         pvpLore.add("");
         pvpLore.add("&7Your PvP rank: " + tier.name());
         pvpLore.add("&7Rating: &f" + data.rating + " &8| &7Kills: &f" + data.kills);
-        set(PVP, Items.icon(Material.IRON_SWORD, plugin.raw("menu-main-pvp-name"), pvpLore, false));
+        set(PVP, Items.model(Items.icon(Material.IRON_SWORD, plugin.raw("menu-main-pvp-name"), pvpLore, false), "blossom:icon_pvp"));
 
-        set(TOP, Items.icon(Material.NETHER_STAR, plugin.raw("menu-main-top-name"), plugin.rawList("menu-main-top"), false));
+        set(TOP, Items.model(Items.icon(Material.NETHER_STAR, plugin.raw("menu-main-top-name"), plugin.rawList("menu-main-top"), false), "blossom:icon_top"));
 
         links.clear();
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("menus.links");
@@ -82,7 +82,13 @@ public final class MainMenu extends Menu {
                 // %placeholders% from other plugins, like %blossomsettings_petals_formatted%
                 lore.add(plugin.hasPlaceholderApi() && line.contains("%") ? Placeholders.ask(viewer, line) : line);
             }
-            set(slot, Items.icon(Items.material(s.getString("icon"), Material.PAPER), s.getString("name", key), lore, false));
+            String model = s.getString("model", switch (key) {
+                case "shop" -> "blossom:icon_shop";
+                case "teams" -> "blossom:icon_teams";
+                case "petalshop" -> "blossom:icon_petal_shop";
+                default -> "";
+            });
+            set(slot, Items.model(Items.icon(Items.material(s.getString("icon"), Material.PAPER), s.getString("name", key), lore, false), model));
             links.put(slot, s.getString("command", ""));
         }
     }
