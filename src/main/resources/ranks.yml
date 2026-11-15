@@ -55,7 +55,7 @@ ranks:
     icon: WHEAT_SEEDS
     perks:
       - "Starter Kit (once)"
-      - "Survival Kit"
+      - "Seedling Kit (chainmail, every day)"
 
   sprout:
     name: "&#8FCB9B☘ Sprout"
@@ -66,8 +66,7 @@ ranks:
       playtime-hours: 1
       cost: 500
     perks:
-      - "Miner Kit and Farmer Kit"
-      - "Iron Fighter Kit"
+      - "Sprout Kit (full iron)"
     rewards:
       petals: 100
 
@@ -81,8 +80,7 @@ ranks:
       blocks-mined: 500
       cost: 2500
     perks:
-      - "Explorer Kit and Builder Kit"
-      - "Advanced Iron Kit (with golden apples)"
+      - "Gardener Kit (enchanted iron, golden apples)"
     rewards:
       petals: 250
 
@@ -96,7 +94,7 @@ ranks:
       mob-kills: 150
       cost: 7500
     perks:
-      - "Diamond Archer Kit"
+      - "Bloom Kit (full diamond)"
     rewards:
       petals: 500
 
@@ -110,7 +108,7 @@ ranks:
       blocks-mined: 5000
       cost: 20000
     perks:
-      - "Diamond Fighter Kit"
+      - "Blossom Kit (enchanted diamond, potions)"
     rewards:
       petals: 1000
 
@@ -124,7 +122,7 @@ ranks:
       mob-kills: 1000
       cost: 50000
     perks:
-      - "Diamond Warrior Kit"
+      - "Sakura Kit (Protection II diamond)"
     rewards:
       petals: 2000
 
@@ -137,7 +135,7 @@ ranks:
       playtime-hours: 120
       cost: 125000
     perks:
-      - "Eternal Garden Kit"
+      - "Eternal Kit (Protection III + the Eternal Bloom ability sword)"
       - "The highest free rank on Blossom SMP"
     rewards:
       petals: 5000
@@ -156,28 +154,25 @@ vip-ranks:
     icon: IRON_INGOT
     permission: blossomcore.vip
     perks:
-      - "VIP Kit (diamond)"
+      - "VIP Kit (Verdant Fang ability sword)"
   vipplus:
     name: "&#8FCB9B&lVIP&f&l+"
     icon: GOLD_INGOT
     permission: blossomcore.vipplus
     perks:
       - "Everything in VIP"
-      - "VIP+ Kit (lightly enchanted diamond)"
-      - "VIP Netherite Kit (every 7 days)"
+      - "VIP+ Kit (Frost Lily ability sword)"
   elite:
     name: "&#F4A9C0&lElite"
     icon: DIAMOND
     permission: blossomcore.elite
     perks:
       - "Everything in VIP+"
-      - "Elite Kit"
-      - "Elite Netherite Kit (every 7 days)"
+      - "Elite Kit (netherite + Rose Thorn ability sword)"
   legend:
     name: "&#FFD98A&lBlossom Legend"
     icon: NETHERITE_INGOT
     permission: blossomcore.legend
     perks:
       - "Everything in Elite"
-      - "Blossom Legend Kit (Blossom-themed gear)"
-      - "Legend Netherite Kit (every 10 days)"
+      - "Blossom Legend Kit (netherite + Sakura Eclipse ability sword)"

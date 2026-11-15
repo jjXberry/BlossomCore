@@ -8,7 +8,8 @@ This is **part 1** of the big Blossom SMP plan. Quests, events, custom items, cu
 
 - **Free ranks** you earn by playing: Seedling → Sprout → Gardener → Bloom → Blossom → Sakura → Eternal. They can't be bought.
 - **Blossom Points** for playing, mining, fighting monsters and winning PvP fights (standing AFK earns nothing, and mob farms are capped per day).
-- **19 kits**: a Starter Kit for new players, 6 survival kits, 5 PvP kits (iron first, then diamond) and 7 VIP kits (diamond and netherite).
+- **13 kits, one complete kit per rank** (gear, tools, food and potions together, no blocks): a Starter Kit, 7 free rank kits, 4 VIP kits and an Owner kit. Armour has trims and Blossom names.
+- **Ability swords**: the best free kit (Eternal) and every VIP kit come with a sword that has a right-click, a shift + right-click and a left-click ability plus a passive. The Owner kit has the very strong Blossom Sovereign. All of it is set up in `weapons.yml`.
 - **Kits reset when you die** (every kit, VIP too). Kit gear stays locked to you and disappears when you die, so it can't be farmed.
 - **Kit limits that can't be broken by a config mistake**: enchantment caps, golden apple caps, banned items.
 - **PvP rating** with 8 PvP ranks (Rookie → Blossom Legend), streaks, a top 10 and seasons. Separate from the free ranks.
@@ -126,6 +127,7 @@ Staff (permission `blossomcore.admin`, ops have it). These also work in the cons
 | `/blossomcore rating set <player> <amount>` | Change a PvP rating |
 | `/blossomcore kit give <player> <kit>` | Give a kit with no cooldown |
 | `/blossomcore kit reset <player> [kit]` | Clear kit cooldowns |
+| `/blossomcore weapon give <player> <weapon>` | Give an ability sword to test it (not a kit item) |
 | `/blossomcore season end confirm` | End the PvP season |
 | `/blossomcore save` | Save everyone now |
 
@@ -137,13 +139,15 @@ A player needs **everything** in the row, then types `/rankup`. The money is pai
 
 | Rank | Blossom Points | Hours played | Also | Cost | Unlocks | Reward |
 |---|---|---|---|---|---|---|
-| Seedling | - | - | - | - | Starter Kit, Survival Kit | - |
-| Sprout | 100 | 1 | - | $500 | Miner, Farmer, Iron Fighter | 100 Petals |
-| Gardener | 400 | 4 | 500 blocks mined | $2,500 | Explorer, Builder, Advanced Iron | 250 Petals |
-| Bloom | 1,000 | 10 | 150 mobs | $7,500 | Diamond Archer | 500 Petals |
-| Blossom | 2,500 | 25 | 5,000 blocks mined | $20,000 | Diamond Fighter | 1,000 Petals |
-| Sakura | 5,000 | 60 | 1,000 mobs | $50,000 | Diamond Warrior | 2,000 Petals |
-| Eternal | 10,000 | 120 | - | $125,000 | Eternal Garden Kit | 5,000 Petals |
+| Seedling | - | - | - | - | Seedling Kit | - |
+| Sprout | 100 | 1 | - | $500 | Sprout Kit | 100 Petals |
+| Gardener | 400 | 4 | 500 blocks mined | $2,500 | Gardener Kit | 250 Petals |
+| Bloom | 1,000 | 10 | 150 mobs | $7,500 | Bloom Kit | 500 Petals |
+| Blossom | 2,500 | 25 | 5,000 blocks mined | $20,000 | Blossom Kit | 1,000 Petals |
+| Sakura | 5,000 | 60 | 1,000 mobs | $50,000 | Sakura Kit | 2,000 Petals |
+| Eternal | 10,000 | 120 | - | $125,000 | Eternal Kit (+ Eternal Bloom sword) | 5,000 Petals |
+
+The rank perks shown in `/ranks` come from `ranks.yml`. If your `ranks.yml` still lists the old kit names (Miner Kit, Iron Fighter Kit...), change the `perks:` lines to the new kit names.
 
 How Blossom Points are earned: 5 for every 10 minutes of playing, 1 per monster, 1 per 25 blocks mined (monsters and mining together stop at 250 a day), and 20 per counted PvP kill. Staff can give points too, and quests and events will give them when those parts are built.
 
@@ -151,31 +155,50 @@ How Blossom Points are earned: 5 for every 10 minutes of playing, 1 per monster,
 
 ## The kits (kits.yml)
 
-| Kit | Who | Cooldown | Golden apples |
-|---|---|---|---|
-| Starter | every new player, automatically | once | 0 |
-| Survival | Seedling | 24h | 0 |
-| Miner, Farmer | Sprout | 24h | 0 |
-| Explorer, Builder | Gardener | 2 days | 0 |
-| Eternal Garden | Eternal | 7 days | 0 |
-| Iron Fighter | Sprout | 12h | 1 |
-| Advanced Iron (Sharpness I, Protection I) | Gardener | 24h | 2 |
-| Diamond Archer (Power II bow) | Bloom | 2 days | 2 |
-| Diamond Fighter | Blossom | 3 days | 4 |
-| Diamond Warrior (Sharpness I, Protection I) | Sakura | 3 days | 5 |
-| VIP (plain diamond) | VIP | 2 days | 5 |
-| VIP+ (Sharpness I, Protection I) | VIP+ | 2 days | 5 |
-| Elite (Sharpness II, Protection II) | Elite | 3 days | 6 |
-| Blossom Legend (Sharpness III, Protection III, named gear) | Blossom Legend | 3 days | 6 |
-| VIP Netherite (plain) | VIP+ **and** Gardener | 7 days | 4 |
-| Elite Netherite (Sharpness II, Protection II) | Elite **and** Gardener | 7 days | 5 |
-| Legend Netherite (Sharpness III, Protection III) | Blossom Legend **and** Gardener | 10 days | 6 |
+**Updating from 1.2?** Your server keeps its old `kits.yml`. To get the new kits, **delete `plugins/BlossomCore/kits.yml`** and restart (or `/blossomcore reload`). `weapons.yml` is new and is made by itself. Then give the owner kit to your owners: `lp group owner permission set blossomcore.owner true` and `lp group coowner permission set blossomcore.owner true`.
+
+One rank = one complete kit. Every kit has a sword, pickaxe, axe, shovel, armour, shield, bow, food and (from Gardener up) golden apples and potions. No blocks.
+
+| Kit | Who | Cooldown | Gear | Sword |
+|---|---|---|---|---|
+| Starter | every new player, once | once | stone tools, pink leather | stone |
+| Seedling | Seedling | 24h | chainmail, stone tools | stone |
+| Sprout | Sprout | 24h | iron, iron tools | iron |
+| Gardener | Gardener | 24h | iron Prot I (emerald trims), Efficiency II tools, 2 gapples | iron Sharp II |
+| Bloom | Bloom | 2 days | diamond (amethyst trims), diamond pickaxe | diamond Sharp I |
+| Blossom | Blossom | 2 days | diamond Prot I, pearls, 3 potions | diamond Sharp II |
+| Sakura | Sakura | 3 days | diamond Prot II (redstone trims), full potion set | diamond Sharp III |
+| **Eternal** | Eternal | 3 days | diamond Prot III (gold trims), Flame bow | **Eternal Bloom** (abilities) |
+| **VIP** | VIP | 2 days | diamond Prot II (emerald trims) | **Verdant Fang** (abilities) |
+| **VIP+** | VIP+ | 2 days | diamond Prot III (diamond trims) | **Frost Lily** (abilities) |
+| **Elite** | Elite | 3 days | netherite Prot II (amethyst trims) | **Rose Thorn** (abilities) |
+| **Blossom Legend** | Blossom Legend | 3 days | netherite Prot III (gold trims), Flame bow | **Sakura Eclipse** (abilities) |
+| **Owner** | `blossomcore.owner` | 1 hour | netherite Prot IV + Mending, elytra, 16 gapples | **Blossom Sovereign** |
+
+A higher VIP rank also gets the lower VIP kits. The Owner tab in `/kits` is hidden from everyone without `blossomcore.owner`, and the Owner kit ignores the limits below (that's what `ignore-limits: true` does).
+
+### The ability swords (weapons.yml)
+
+Right-click, **shift + right-click** and **left-click at the air** each use an ability (left-click on a mob is still a normal hit). The cooldown shows above the hotbar. The passive works while the sword is in your hand. The sword's lore lists every ability, worked out from the settings, so it's always right.
+
+| Sword | Right-click | Shift + right-click | Left-click | Passive |
+|---|---|---|---|---|
+| Eternal Bloom | Golden Dash | Spring Rain (heal 3❤ + Regen) | Sunbeam (beam, slows) | 8% lifesteal |
+| Verdant Fang | Vine Lash (dash) | Overgrowth (heal 3❤) | Thorn Shot (beam, poison) | 10% poison on hit |
+| Frost Lily | Avalanche (leap + slam) | Frost Bloom (blast, Slowness II) | Ice Needle (beam, slows) | 20% slowness on hit |
+| Rose Thorn | Petal Rush (dash) | Rose Burst (blast, wither) | Thorn Hook (pull an enemy to you) | 10% lifesteal, 10% wither |
+| Sakura Eclipse | Falling Star (leap + slam) | Petal Shield (Resistance II + 2❤ gold) | Eclipse Ray (beam, wither) | 12% lifesteal, Speed I |
+| Blossom Sovereign | Sovereign Strike (lightning) | Royal Bloom (huge blast) | Crown Rush (dash, 4s cooldown) | 25% lifesteal, wither, Speed II, no fall damage |
+
+**Make your own:** copy a weapon in `weapons.yml`, change the name, item and abilities (dash, leap, burst, heal, bolt, pull, lightning, guard), then put `- weapon: <id>` in a kit and `/blossomcore reload`. Every number (damage, cooldown, range, effects) is in that file.
+
+Kit swords are kit gear like everything else: locked to the player and gone when they die.
 
 The cooldowns above are for players who stay alive. **Dying resets every kit**, so after a death you can claim them all again straight away.
 
 ### Kits reset when you die (new in 1.1)
 
-When a player dies, every kit they've unlocked can be claimed again, VIP and Netherite kits too, and they're told so when they respawn. To stop that becoming an endless gear machine, **kit gear stays with the player who claimed it**:
+When a player dies, every kit they've unlocked can be claimed again, VIP kits too, and they're told so when they respawn. To stop that becoming an endless gear machine, **kit gear stays with the player who claimed it**:
 
 - It can't be put in chests, ender chests, shulkers, barrels, hoppers, bundles, item frames, armour stands or decorated pots, and it can't be dropped. Crafting tables, anvils, smithing tables, enchanting tables and grindstones still work.
 - It **disappears when its owner dies**, so killers don't loot it and graves or death chests never see it. This works with keepInventory on too.
@@ -199,7 +222,7 @@ A single kit can opt out by adding `reset-on-death: false` to it in `kits.yml`. 
 
 These always win over `kits.yml`, so a typo can't make an overpowered kit:
 
-- **Enchantments** stop at level 3 (Knockback, Punch, Fire Aspect and Flame at 1; Infinity, Thorns and Mending are off).
+- **Enchantments** stop at level 3 (Knockback, Punch, Fire Aspect and Flame at 1; Infinity, Thorns and Mending are off). Only the Owner kit skips this.
 - **Golden apples**: at most 6 in one kit, and at most **12 a day from all kits together**. After that a kit still works, just without the apples.
 - **Never in a kit**: end crystals, respawn anchors, maces, enchanted golden apples, totems.
 - **No kits in a fight**: a kit can't be claimed for 20 seconds after hitting or being hit by a player.
@@ -207,7 +230,7 @@ These always win over `kits.yml`, so a typo can't make an overpowered kit:
 - A claim is saved to disk right away, before the items are handed over, so a crash or a quick re-log can't give a kit twice.
 - Weapons, tools and armour from kits get a small "Kit item" line.
 
-Free players get diamond through ranks, and everyone can still enchant their own gear in survival, so a VIP kit is a head start, not a ceiling.
+Free players get diamond and their own ability sword through ranks, and everyone can still enchant their own gear in survival, so a VIP kit is a head start, not a ceiling.
 
 ---
 
