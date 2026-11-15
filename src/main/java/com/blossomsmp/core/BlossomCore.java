@@ -16,6 +16,8 @@ import com.blossomsmp.core.menu.MenuListener;
 import com.blossomsmp.core.pvp.PvpManager;
 import com.blossomsmp.core.rank.RankManager;
 import com.blossomsmp.core.util.Text;
+import com.blossomsmp.core.weapon.WeaponListener;
+import com.blossomsmp.core.weapon.WeaponManager;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
@@ -45,6 +47,7 @@ import java.util.List;
  *   config.yml    general settings, kit limits, menu look, sounds
  *   ranks.yml     the free ranks and how Blossom Points are earned
  *   kits.yml      every kit
+ *   weapons.yml   the ability weapons some kits give
  *   pvp.yml       PvP rating, PvP ranks, anti-abuse, banned PvP styles
  *   messages.yml  every message
  *   players/      one file per player
@@ -55,11 +58,13 @@ public final class BlossomCore extends JavaPlugin {
     private FileConfiguration ranksFile = new YamlConfiguration();
     private FileConfiguration kitsFile = new YamlConfiguration();
     private FileConfiguration pvpFile = new YamlConfiguration();
+    private FileConfiguration weaponsFile = new YamlConfiguration();
 
     private DataStore store;
     private Rewards rewards;
     private RankManager ranks;
     private KitManager kits;
+    private WeaponManager weapons;
     private PvpManager pvp;
 
     private boolean vaultInstalled;
@@ -72,6 +77,7 @@ public final class BlossomCore extends JavaPlugin {
         store = new DataStore(this);
         rewards = new Rewards(this);
         ranks = new RankManager(this);
+        weapons = new WeaponManager(this);
         kits = new KitManager(this);
         pvp = new PvpManager(this);
         for (String problem : loadAll()) {
@@ -99,6 +105,7 @@ public final class BlossomCore extends JavaPlugin {
         pm.registerEvents(new PlayerListener(this, pvpListener), this);
         pm.registerEvents(new MenuListener(), this);
         pm.registerEvents(new KitGearListener(this), this);
+        pm.registerEvents(new WeaponListener(this), this);
 
         PlayerCommands playerCommands = new PlayerCommands(this);
         for (String name : List.of("blossom", "ranks", "rankup", "kits", "kit", "pvp", "pvptop", "profile")) {
@@ -115,7 +122,7 @@ public final class BlossomCore extends JavaPlugin {
             store.get(player);
         }
         getLogger().info("BlossomCore is ready: " + ranks.all().size() + " ranks, " + kits.all().size()
-                + " kits, " + pvp.tiers().size() + " PvP ranks. PvP season " + pvp.season() + ".");
+                + " kits, " + weapons.ids().size() + " ability weapons, " + pvp.tiers().size() + " PvP ranks. PvP season " + pvp.season() + ".");
     }
 
     @Override
@@ -155,9 +162,11 @@ public final class BlossomCore extends JavaPlugin {
         ranksFile = loadYaml("ranks.yml", ranksFile, problems, false);
         kitsFile = loadYaml("kits.yml", kitsFile, problems, false);
         pvpFile = loadYaml("pvp.yml", pvpFile, problems, false);
+        weaponsFile = loadYaml("weapons.yml", weaponsFile, problems, false);
         ranks.load(ranksFile);
         pvp.load(pvpFile);
-        kits.load(kitsFile); // after ranks: kits check that their required rank exists
+        weapons.load(weaponsFile);
+        kits.load(kitsFile); // after ranks and weapons: kits check that their rank and weapons exist
         money = null;        // look the economy up again
         // custom menu icons from the Blossom resource pack: auto = on when server.properties has a pack link
         String icons = String.valueOf(getConfig().getString("menus.custom-icons", "auto")).toLowerCase(java.util.Locale.ROOT);
@@ -277,6 +286,10 @@ public final class BlossomCore extends JavaPlugin {
 
     public KitManager kits() {
         return kits;
+    }
+
+    public WeaponManager weapons() {
+        return weapons;
     }
 
     public PvpManager pvp() {

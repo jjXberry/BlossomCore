@@ -1,0 +1,288 @@
+# ============================================================
+#   BlossomCore  -  Ability weapons
+# ============================================================
+# Swords with abilities that kits can hand out. Put one in a kit with:
+#     - weapon: eternal_bloom
+# After editing, type:  /blossomcore reload
+# Give one to test:     /blossomcore weapon give <player> <weapon>
+#
+# EACH WEAPON
+#   item        material, then enchant:level (same as kits.yml)
+#   name, lore  how it looks. The ability lines are added to the lore by themselves.
+#   color       colour of the ability lines
+#   particle    a simple particle: CHERRY_LEAVES, END_ROD, FLAME, SOUL_FIRE_FLAME,
+#               SNOWFLAKE, HAPPY_VILLAGER, ENCHANT, HEART, TOTEM_OF_UNDYING ...
+#   glow        enchantment shine (true/false)
+#
+#   right-click / shift-right-click / left-click   (leave one out = no ability there)
+#     type      one of the types below
+#     name      what it's called
+#     cooldown  seconds
+#     + the settings of that type
+#
+# ABILITY TYPES                       SETTINGS (damage is in half hearts: 4 = 2 hearts)
+#   dash       dash forward            damage, power
+#   leap       jump up and slam down   damage, radius, up, forward
+#   burst      blast enemies around    damage, radius, knockback
+#   heal       heal yourself           hearts, regen-seconds, regen-level, absorption-hearts
+#   bolt       beam at the first enemy damage, range, fire-seconds
+#   pull       pull an enemy to you    range, power, damage
+#   lightning  lightning where you look damage, radius, range
+#   guard      Resistance + gold hearts seconds, resistance-level, absorption-hearts
+#   Any type can also have:  effect: slowness   effect-seconds: 3   effect-level: 1
+#   (the effect goes on every enemy it hits: slowness, wither, poison, weakness, levitation...)
+#
+# PASSIVE (always on while it's in your hand)
+#   name
+#   lifesteal            % of the damage you deal that heals you
+#   on-hit-effect        an effect your hits can give (wither, poison, slowness...)
+#   on-hit-chance        % chance (100 = every hit)
+#   on-hit-seconds, on-hit-level
+#   on-hit-fire-seconds  set enemies on fire
+#   holding-effect       an effect you have while holding it (speed, haste...)
+#   holding-level
+#   no-fall-damage       true = no fall damage while holding it
+
+weapons:
+
+  # ----------------------------------------------------------
+  #  The best FREE sword (Eternal Kit, the highest free rank)
+  # ----------------------------------------------------------
+  eternal_bloom:
+    item: "DIAMOND_SWORD 1 sharpness:3 unbreaking:3"
+    name: "&#FFD98A&l♛ Eternal Bloom ♛"
+    lore:
+      - "&7Grown under the oldest blossom tree,"
+      - "&7for those who never stopped playing."
+    color: "&#FFD98A"
+    particle: END_ROD
+    right-click:
+      type: dash
+      name: "Golden Dash"
+      cooldown: 14
+      damage: 4
+      power: 1.4
+    shift-right-click:
+      type: heal
+      name: "Spring Rain"
+      cooldown: 35
+      hearts: 3
+      regen-seconds: 5
+      regen-level: 1
+    left-click:
+      type: bolt
+      name: "Sunbeam"
+      cooldown: 10
+      damage: 4
+      range: 16
+      effect: slowness
+      effect-seconds: 2
+      effect-level: 1
+    passive:
+      name: "Golden Roots"
+      lifesteal: 8
+
+  # ----------------------------------------------------------
+  #  VIP
+  # ----------------------------------------------------------
+  verdant_fang:
+    item: "DIAMOND_SWORD 1 sharpness:2 unbreaking:3"
+    name: "&#8FCB9B&l❦ Verdant Fang ❦"
+    lore:
+      - "&7A blade wrapped in living vines."
+    color: "&#8FCB9B"
+    particle: HAPPY_VILLAGER
+    right-click:
+      type: dash
+      name: "Vine Lash"
+      cooldown: 15
+      damage: 3
+      power: 1.3
+    shift-right-click:
+      type: heal
+      name: "Overgrowth"
+      cooldown: 40
+      hearts: 3
+    left-click:
+      type: bolt
+      name: "Thorn Shot"
+      cooldown: 10
+      damage: 3
+      range: 16
+      effect: poison
+      effect-seconds: 3
+      effect-level: 1
+    passive:
+      name: "Thorned Vines"
+      on-hit-effect: poison
+      on-hit-chance: 10
+      on-hit-seconds: 3
+
+  # ----------------------------------------------------------
+  #  VIP+
+  # ----------------------------------------------------------
+  frost_lily:
+    item: "DIAMOND_SWORD 1 sharpness:3 unbreaking:3"
+    name: "&#9AD8E8&l❄ Frost Lily ❄"
+    lore:
+      - "&7A flower that blooms only in snow."
+    color: "&#9AD8E8"
+    particle: SNOWFLAKE
+    right-click:
+      type: leap
+      name: "Avalanche"
+      cooldown: 16
+      damage: 5
+      radius: 4
+      up: 1.0
+      forward: 0.6
+    shift-right-click:
+      type: burst
+      name: "Frost Bloom"
+      cooldown: 25
+      damage: 3
+      radius: 5
+      knockback: 0.8
+      effect: slowness
+      effect-seconds: 3
+      effect-level: 2
+    left-click:
+      type: bolt
+      name: "Ice Needle"
+      cooldown: 9
+      damage: 4
+      range: 18
+      effect: slowness
+      effect-seconds: 2
+      effect-level: 1
+    passive:
+      name: "Winter's Touch"
+      on-hit-effect: slowness
+      on-hit-chance: 20
+      on-hit-seconds: 2
+
+  # ----------------------------------------------------------
+  #  Elite
+  # ----------------------------------------------------------
+  rose_thorn:
+    item: "NETHERITE_SWORD 1 sharpness:3 unbreaking:3"
+    name: "&#F4A9C0&l❀ Rose Thorn ❀"
+    lore:
+      - "&7Beautiful, until it draws blood."
+    color: "&#F4A9C0"
+    particle: CHERRY_LEAVES
+    right-click:
+      type: dash
+      name: "Petal Rush"
+      cooldown: 13
+      damage: 5
+      power: 1.5
+    shift-right-click:
+      type: burst
+      name: "Rose Burst"
+      cooldown: 22
+      damage: 4
+      radius: 5
+      knockback: 1.2
+      effect: wither
+      effect-seconds: 3
+      effect-level: 1
+    left-click:
+      type: pull
+      name: "Thorn Hook"
+      cooldown: 12
+      range: 16
+      power: 1.2
+    passive:
+      name: "Bloodbloom"
+      lifesteal: 10
+      on-hit-effect: wither
+      on-hit-chance: 10
+      on-hit-seconds: 3
+
+  # ----------------------------------------------------------
+  #  Blossom Legend
+  # ----------------------------------------------------------
+  sakura_eclipse:
+    item: "NETHERITE_SWORD 1 sharpness:3 unbreaking:3 fire_aspect:1"
+    name: "&#FF69B4&l✿ Sakura Eclipse ✿"
+    lore:
+      - "&7When it's drawn, the petals turn"
+      - "&7the sky dark pink."
+    color: "&#FF69B4"
+    particle: CHERRY_LEAVES
+    right-click:
+      type: leap
+      name: "Falling Star"
+      cooldown: 14
+      damage: 6
+      radius: 5
+      up: 1.1
+      forward: 0.7
+    shift-right-click:
+      type: guard
+      name: "Petal Shield"
+      cooldown: 40
+      seconds: 5
+      resistance-level: 2
+      absorption-hearts: 4
+    left-click:
+      type: bolt
+      name: "Eclipse Ray"
+      cooldown: 8
+      damage: 5
+      range: 20
+      effect: wither
+      effect-seconds: 3
+      effect-level: 1
+    passive:
+      name: "Eclipse"
+      lifesteal: 12
+      holding-effect: speed
+      holding-level: 1
+
+  # ----------------------------------------------------------
+  #  OWNER (very strong on purpose)
+  # ----------------------------------------------------------
+  blossom_sovereign:
+    item: "NETHERITE_SWORD 1 sharpness:5 fire_aspect:2 looting:3 sweeping_edge:3 unbreaking:3 mending:1"
+    name: "&#FF1493&l♛ Blossom Sovereign ♛"
+    lore:
+      - "&7The crown of Blossom SMP, in the shape"
+      - "&7of a blade. Only the owner may hold it."
+    color: "&#FF1493"
+    particle: CHERRY_LEAVES
+    unbreakable: true
+    right-click:
+      type: lightning
+      name: "Sovereign Strike"
+      cooldown: 6
+      damage: 10
+      radius: 4
+      range: 30
+    shift-right-click:
+      type: burst
+      name: "Royal Bloom"
+      cooldown: 15
+      damage: 8
+      radius: 8
+      knockback: 2.0
+      effect: levitation
+      effect-seconds: 2
+      effect-level: 1
+    left-click:
+      type: dash
+      name: "Crown Rush"
+      cooldown: 4
+      damage: 8
+      power: 2.0
+    passive:
+      name: "Crown of Petals"
+      lifesteal: 25
+      on-hit-effect: wither
+      on-hit-chance: 30
+      on-hit-seconds: 4
+      on-hit-level: 2
+      holding-effect: speed
+      holding-level: 2
+      no-fall-damage: true

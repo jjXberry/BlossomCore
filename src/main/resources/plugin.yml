@@ -1,5 +1,5 @@
 name: BlossomCore
-version: 1.2.0
+version: 1.3.0
 main: com.blossomsmp.core.BlossomCore
 api-version: '1.21'
 author: BlossomSMP
@@ -37,7 +37,7 @@ commands:
 
 permissions:
   blossomcore.admin:
-    description: Use /blossomcore (reload, points, rank, rating, kit, season)
+    description: Use /blossomcore (reload, points, rank, rating, kit, weapon, season)
     default: op
   blossomcore.kit.bypasscooldown:
     description: Claim kits with no cooldown (one-time kits and claim limits still apply)
@@ -45,21 +45,25 @@ permissions:
 
   # The four VIP ranks. Each one includes the ranks below it,
   # so a LuckPerms group only needs ONE of these.
+  blossomcore.owner:
+    description: The Owner kit tab and kit (give it to the owner and co-owner groups)
+    default: false
+
   blossomcore.vip:
     description: VIP rank (VIP kit)
     default: false
   blossomcore.vipplus:
-    description: VIP+ rank (VIP+ kit, VIP Netherite kit)
+    description: VIP+ rank (VIP+ kit)
     default: false
     children:
       blossomcore.vip: true
   blossomcore.elite:
-    description: Elite rank (Elite kit, Elite Netherite kit)
+    description: Elite rank (Elite kit)
     default: false
     children:
       blossomcore.vipplus: true
   blossomcore.legend:
-    description: Blossom Legend rank (Legend kit, Legend Netherite kit)
+    description: Blossom Legend rank (Legend kit)
     default: false
     children:
       blossomcore.elite: true

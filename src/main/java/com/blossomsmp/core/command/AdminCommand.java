@@ -23,6 +23,7 @@ import java.util.Locale;
  * /blossomcore rating set &lt;player&gt; &lt;amount&gt;
  * /blossomcore kit give &lt;player&gt; &lt;kit&gt;         (no cooldown, no checks)
  * /blossomcore kit reset &lt;player&gt; [kit]        (clears cooldowns and claim counts)
+ * /blossomcore weapon give &lt;player&gt; &lt;weapon&gt;   (an ability weapon from weapons.yml, for testing)
  * /blossomcore season end confirm
  * /blossomcore save
  *
@@ -91,6 +92,7 @@ public final class AdminCommand implements TabExecutor {
             case "rank" -> rank(sender, args);
             case "rating" -> rating(sender, args);
             case "kit" -> kit(sender, args);
+            case "weapon" -> weapon(sender, args);
             case "season" -> season(sender, args);
             default -> usage(sender);
         }
@@ -191,6 +193,28 @@ public final class AdminCommand implements TabExecutor {
         }
     }
 
+    private void weapon(CommandSender sender, String[] args) {
+        if (args.length < 4 || !args[1].equalsIgnoreCase("give")) {
+            say(sender, "&7Use &f/blossomcore weapon give <player> <weapon>&7. Weapons: &f"
+                    + String.join(", ", plugin.weapons().ids()));
+            return;
+        }
+        Player target = online(sender, args[2]);
+        if (target == null) {
+            return;
+        }
+        List<String> problems = new ArrayList<>();
+        org.bukkit.inventory.ItemStack item = plugin.weapons().create(args[3], problems);
+        if (item == null) {
+            say(sender, "&cThere is no weapon called &f" + args[3] + "&c. Weapons: &f" + String.join(", ", plugin.weapons().ids()));
+            return;
+        }
+        for (org.bukkit.inventory.ItemStack rest : target.getInventory().addItem(item).values()) {
+            target.getWorld().dropItemNaturally(target.getLocation(), rest);
+        }
+        say(sender, "&7Gave the &f" + args[3] + " &7to &f" + target.getName() + "&7. (It is not a kit item, so it can be stored and dropped.)");
+    }
+
     private void season(CommandSender sender, String[] args) {
         if (args.length < 2 || !args[1].equalsIgnoreCase("end")) {
             usage(sender);
@@ -219,16 +243,17 @@ public final class AdminCommand implements TabExecutor {
         String first = args[0].toLowerCase(Locale.ROOT);
         List<String> options = new ArrayList<>();
         if (args.length == 1) {
-            options.addAll(List.of("reload", "save", "points", "rank", "rating", "kit", "season"));
+            options.addAll(List.of("reload", "save", "points", "rank", "rating", "kit", "weapon", "season"));
         } else if (args.length == 2) {
             switch (first) {
                 case "points" -> options.addAll(List.of("give", "take", "set"));
                 case "rank", "rating" -> options.add("set");
                 case "kit" -> options.addAll(List.of("give", "reset"));
+                case "weapon" -> options.add("give");
                 case "season" -> options.add("end");
                 default -> { }
             }
-        } else if (args.length == 3 && List.of("points", "rank", "rating", "kit").contains(first)) {
+        } else if (args.length == 3 && List.of("points", "rank", "rating", "kit", "weapon").contains(first)) {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 options.add(online.getName());
             }
@@ -236,6 +261,8 @@ public final class AdminCommand implements TabExecutor {
             for (Rank rank : plugin.ranks().all()) {
                 options.add(rank.id());
             }
+        } else if (args.length == 4 && first.equals("weapon")) {
+            options.addAll(plugin.weapons().ids());
         } else if (args.length == 4 && first.equals("kit")) {
             for (Kit kit : plugin.kits().all()) {
                 options.add(kit.id());

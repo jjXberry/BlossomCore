@@ -14,10 +14,11 @@ import java.util.List;
  * @param firstJoin    given automatically the first time a player joins
  * @param maxClaims    most times a player can ever claim it (0 = no limit)
  * @param resetOnDeath dying makes the kit claimable again
+ * @param ignoreLimits the balance limits in config.yml don't apply (the owner kit)
  */
 public record Kit(String id, String name, Material icon, String category, List<String> description,
                   long cooldownMs, String requiredRank, String permission, boolean firstJoin, int maxClaims,
-                  boolean resetOnDeath, List<ItemStack> items) {
+                  boolean resetOnDeath, boolean ignoreLimits, List<ItemStack> items) {
 
     public enum State { READY, COOLDOWN, NEED_RANK, NEED_PERMISSION, USED_UP }
 
@@ -25,7 +26,7 @@ public record Kit(String id, String name, Material icon, String category, List<S
     public record Status(State state, String detail) {
     }
 
-    /** A tab in the kit menu. */
-    public record Category(String id, String name, Material icon, List<String> description) {
+    /** A tab in the kit menu. permission "" = everyone sees it. */
+    public record Category(String id, String name, Material icon, List<String> description, String permission) {
     }
 }

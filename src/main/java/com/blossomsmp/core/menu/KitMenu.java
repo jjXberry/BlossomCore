@@ -35,7 +35,7 @@ public final class KitMenu extends Menu {
     /** @param category the tab to show first, or null for the first one */
     public KitMenu(BlossomCore plugin, Player viewer, String category) {
         super(plugin, viewer, 6, plugin.raw("menu-kits-title"));
-        this.category = category != null ? category : plugin.kits().categories().get(0).id();
+        this.category = category != null ? category : plugin.kits().categories(viewer).get(0).id();
     }
 
     @Override
@@ -54,7 +54,7 @@ public final class KitMenu extends Menu {
             kitAt.put(KIT_SLOTS[i], kit);
         }
 
-        List<Kit.Category> categories = plugin.kits().categories();
+        List<Kit.Category> categories = plugin.kits().categories(viewer);
         int[] tabs = spread(45, Math.min(7, categories.size()));
         for (int i = 0; i < tabs.length; i++) {
             Kit.Category c = categories.get(i);
@@ -63,6 +63,7 @@ public final class KitMenu extends Menu {
             lore.add(plugin.raw(c.id().equals(category) ? "menu-tab-open" : "menu-tab-click"));
             String model = switch (c.id()) {
                 case "survival", "pvp", "vip" -> "blossom:icon_kits_" + c.id();
+                case "free" -> "blossom:icon_kits_pvp";
                 default -> "";
             };
             set(tabs[i], Items.model(Items.icon(c.icon(), c.name(), lore, c.id().equals(category)), model));

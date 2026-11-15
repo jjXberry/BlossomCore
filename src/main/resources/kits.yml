@@ -4,18 +4,32 @@
 # After editing, type:  /blossomcore reload
 # If you make a mistake in a kit, the console tells you which kit and what.
 #
+# One rank = one complete kit: gear, tools, food and potions together. No blocks.
+#   Free kits:  Starter -> Seedling -> Sprout -> Gardener -> Bloom -> Blossom -> Sakura -> Eternal
+#   VIP kits:   VIP -> VIP+ -> Elite -> Blossom Legend   (each has a sword with abilities)
+#   Owner kit:  only for blossomcore.owner
+#
 # HOW TO WRITE AN ITEM
 #   - "IRON_SWORD"                              one iron sword
 #   - "ARROW 32"                                32 arrows
 #   - "DIAMOND_SWORD 1 sharpness:1"             item, amount, then enchant:level
-#   - "DIAMOND_BOOTS 1 protection:1 unbreaking:1"
-#   An item with its own name (or colour, for leather):
-#   - item: "DIAMOND_SWORD 1 sharpness:3"
-#     name: "&#F4A9C0Blossom Blade"
+#   - "SPLASH_POTION 2 potion:strong_healing"   potions: potion:<type>
+#        types: swiftness, strong_swiftness, strength, strong_strength, healing, strong_healing,
+#               fire_resistance, long_fire_resistance, regeneration, turtle_master ...
+#   An item with its own name, lore, trim or colour:
+#   - item: "DIAMOND_CHESTPLATE 1 protection:2"
+#     name: "&#F4A9C0Blossom Guard"
 #     lore:
 #       - "&7Forged under the first tree."
-#     color: "#F4A9C0"        (leather armour only)
+#     trim: "amethyst flow"     (armour: trim material, then pattern)
+#                                materials: amethyst copper diamond emerald gold iron lapis
+#                                           netherite quartz redstone resin
+#                                patterns:  bolt coast dune eye flow host raiser rib sentry shaper
+#                                           silence snout spire tide vex ward wayfinder wild
+#     color: "#F4A9C0"          (leather armour only)
 #     glow: true
+#   An ability sword from weapons.yml:
+#   - weapon: eternal_bloom
 #
 # EACH KIT
 #   name                how it looks
@@ -28,43 +42,45 @@
 #   max-claims          most times a player can EVER claim it. Leave out = no limit.
 #   give-on-first-join  true = handed to brand new players automatically
 #   reset-on-death      false = this kit does NOT reset when you die (see death-reset in config.yml)
+#   ignore-limits       true = the limits in config.yml don't apply (only the Owner kit uses this)
 #
-# THE LIMITS IN config.yml ALWAYS WIN
-#   Banned items are left out, enchantments above the limit are lowered,
-#   and golden apples above the limit are removed. Armour is put on
-#   automatically if that slot is empty, and a shield goes in the off hand.
+# THE LIMITS IN config.yml ALWAYS WIN (unless ignore-limits: true)
+#   Banned items (maces, crystals...) are left out, enchantments above the limit are lowered,
+#   and golden apples above the limit are removed. Armour is put on automatically if that
+#   slot is empty, and a shield goes in the off hand.
 
 categories:
-  survival:
-    name: "&#8FCB9B&lSurvival Kits"
-    icon: IRON_PICKAXE
-    description:
-      - "&7Tools and supplies for survival."
-      - "&7Unlocked with free ranks."
-  pvp:
-    name: "&f&lPvP Kits"
+  free:
+    name: "&#8FCB9B&l✿ Free Kits"
     icon: IRON_SWORD
     description:
-      - "&7Sword, axe, shield and bow."
-      - "&7Unlocked with free ranks."
+      - "&7Earn them by ranking up."
+      - "&7Every rank unlocks a better kit."
   vip:
-    name: "&#F4A9C0&lVIP Kits"
+    name: "&#F4A9C0&l✦ VIP Kits"
     icon: DIAMOND
     description:
-      - "&7Extra kits for VIP ranks."
+      - "&7Kits for the VIP ranks."
+      - "&7Each one has a sword with abilities."
+  owner:
+    name: "&#FF1493&l♛ Owner"
+    icon: NETHER_STAR
+    permission: blossomcore.owner
+    description:
+      - "&7Only the owners can see this."
 
 kits:
 
   # ==========================================================
-  #  SURVIVAL (free)
+  #  FREE KITS  (one per free rank)
   # ==========================================================
 
   starter:
-    name: "&#8FCB9BStarter Kit"
+    name: "&#F7C6D4&l✿ Starter Kit"
     icon: LEATHER_CHESTPLATE
-    category: survival
+    category: free
     description:
-      - "&7Everything you need for your first day."
+      - "&7Welcome to Blossom SMP!"
       - "&7You get it once, when you first join."
     cooldown: once
     give-on-first-join: true
@@ -72,141 +88,57 @@ kits:
       - "STONE_SWORD"
       - "STONE_PICKAXE"
       - "STONE_AXE"
+      - "STONE_SHOVEL"
       - item: "LEATHER_HELMET"
+        name: "&#F7C6D4Petal Cap"
         color: "#F4C6D2"
       - item: "LEATHER_CHESTPLATE"
+        name: "&#F7C6D4Petal Tunic"
         color: "#F4C6D2"
       - item: "LEATHER_LEGGINGS"
+        name: "&#F7C6D4Petal Pants"
         color: "#F4C6D2"
       - item: "LEATHER_BOOTS"
+        name: "&#F7C6D4Petal Boots"
         color: "#F4C6D2"
       - "BREAD 16"
-      - "OAK_LOG 16"
-      - "COBBLESTONE 32"
-      - "OAK_PLANKS 32"
-      - "TORCH 16"
-      - "WHITE_BED"
 
-  survival:
-    name: "&#8FCB9BSurvival Kit"
-    icon: BREAD
-    category: survival
+  seedling:
+    name: "&#9DB8A0&l☘ Seedling Kit"
+    icon: CHAINMAIL_CHESTPLATE
+    category: free
     description:
-      - "&7Basic armour, tools and food to get back on your feet."
+      - "&7Chainmail, stone tools and food."
+      - "&7Enough to get back on your feet."
     cooldown: 24h
     required-rank: seedling
     items:
-      - "LEATHER_HELMET"
-      - "LEATHER_CHESTPLATE"
-      - "LEATHER_LEGGINGS"
-      - "LEATHER_BOOTS"
+      - "STONE_SWORD"
       - "STONE_PICKAXE"
       - "STONE_AXE"
       - "STONE_SHOVEL"
+      - "CHAINMAIL_HELMET"
+      - "CHAINMAIL_CHESTPLATE"
+      - "CHAINMAIL_LEGGINGS"
+      - "CHAINMAIL_BOOTS"
+      - "SHIELD"
+      - "BOW"
+      - "ARROW 16"
       - "BREAD 24"
-      - "TORCH 32"
-      - "OAK_LOG 16"
 
-  miner:
-    name: "&#8FCB9BMiner Kit"
-    icon: IRON_PICKAXE
-    category: survival
+  sprout:
+    name: "&#8FCB9B&l☘ Sprout Kit"
+    icon: IRON_CHESTPLATE
+    category: free
     description:
-      - "&7For a long trip underground."
+      - "&7Full iron and iron tools."
     cooldown: 24h
-    required-rank: sprout
-    items:
-      - "IRON_PICKAXE 1 efficiency:1"
-      - "STONE_SHOVEL"
-      - "TORCH 64"
-      - "LADDER 16"
-      - "WATER_BUCKET"
-      - "COOKED_BEEF 8"
-
-  farmer:
-    name: "&#8FCB9BFarmer Kit"
-    icon: IRON_HOE
-    category: survival
-    description:
-      - "&7Start a field anywhere."
-    cooldown: 24h
-    required-rank: sprout
-    items:
-      - "IRON_HOE"
-      - "WATER_BUCKET"
-      - "WHEAT_SEEDS 32"
-      - "CARROT 16"
-      - "POTATO 16"
-      - "BEETROOT_SEEDS 16"
-      - "BONE_MEAL 32"
-
-  explorer:
-    name: "&#8FCB9BExplorer Kit"
-    icon: COMPASS
-    category: survival
-    description:
-      - "&7Iron tools and travel gear for the open road."
-    cooldown: 2d
-    required-rank: gardener
-    items:
-      - "IRON_PICKAXE"
-      - "IRON_AXE"
-      - "IRON_SHOVEL"
-      - "COOKED_BEEF 32"
-      - "OAK_BOAT"
-      - "COMPASS"
-      - "SPYGLASS"
-      - "TORCH 32"
-      - "WHITE_BED"
-
-  builder:
-    name: "&#8FCB9BBuilder Kit"
-    icon: STONE_BRICKS
-    category: survival
-    description:
-      - "&7Blocks, lights and tools to start a build."
-    cooldown: 2d
-    required-rank: gardener
-    items:
-      - "IRON_AXE"
-      - "IRON_SHOVEL"
-      - "STONE_BRICKS 64"
-      - "OAK_PLANKS 64"
-      - "CHERRY_PLANKS 64"
-      - "GLASS 32"
-      - "LANTERN 8"
-      - "SCAFFOLDING 32"
-
-  eternal_garden:
-    name: "&#FFD98AEternal Garden Kit"
-    icon: CHERRY_SAPLING
-    category: survival
-    description:
-      - "&7Plant a blossom grove of your own."
-    cooldown: 7d
-    required-rank: eternal
-    items:
-      - "CHERRY_SAPLING 16"
-      - "CHERRY_LOG 64"
-      - "PINK_PETALS 64"
-      - "BONE_MEAL 32"
-      - "LANTERN 8"
-
-  # ==========================================================
-  #  PVP (free)   iron first, diamond for the higher ranks
-  # ==========================================================
-
-  iron_fighter:
-    name: "&fIron Fighter Kit"
-    icon: IRON_SWORD
-    category: pvp
-    description:
-      - "&7Plain iron and one golden apple."
-    cooldown: 12h
     required-rank: sprout
     items:
       - "IRON_SWORD"
+      - "IRON_PICKAXE"
       - "IRON_AXE"
+      - "IRON_SHOVEL"
       - "IRON_HELMET"
       - "IRON_CHESTPLATE"
       - "IRON_LEGGINGS"
@@ -214,256 +146,397 @@ kits:
       - "SHIELD"
       - "BOW"
       - "ARROW 32"
-      - "GOLDEN_APPLE 1"
       - "COOKED_BEEF 16"
+      - "WATER_BUCKET"
 
-  advanced_iron:
-    name: "&fAdvanced Iron Kit"
-    icon: IRON_CHESTPLATE
-    category: pvp
+  gardener:
+    name: "&#6FB98F&l❀ Gardener Kit"
+    icon: IRON_SWORD
+    category: free
     description:
-      - "&7Lightly enchanted iron and your first golden apples."
+      - "&7Enchanted iron with emerald trims,"
+      - "&7faster tools and your first golden apples."
     cooldown: 24h
     required-rank: gardener
     items:
-      - "IRON_SWORD 1 sharpness:1"
-      - "IRON_AXE"
-      - "IRON_HELMET 1 protection:1"
-      - "IRON_CHESTPLATE 1 protection:1"
-      - "IRON_LEGGINGS 1 protection:1"
-      - "IRON_BOOTS 1 protection:1"
+      - item: "IRON_SWORD 1 sharpness:2"
+        name: "&#6FB98FGardener's Blade"
+      - "IRON_PICKAXE 1 efficiency:2 unbreaking:1"
+      - "IRON_AXE 1 efficiency:2"
+      - "IRON_SHOVEL 1 efficiency:2"
+      - item: "IRON_HELMET 1 protection:1"
+        name: "&#6FB98FGardener's Helmet"
+        trim: "emerald wild"
+      - item: "IRON_CHESTPLATE 1 protection:1"
+        name: "&#6FB98FGardener's Chestplate"
+        trim: "emerald wild"
+      - item: "IRON_LEGGINGS 1 protection:1"
+        name: "&#6FB98FGardener's Leggings"
+        trim: "emerald wild"
+      - item: "IRON_BOOTS 1 protection:1"
+        name: "&#6FB98FGardener's Boots"
+        trim: "emerald wild"
       - "SHIELD"
-      - "BOW"
+      - "BOW 1 power:1"
       - "ARROW 48"
       - "GOLDEN_APPLE 2"
-      - "COOKED_BEEF 16"
+      - "COOKED_BEEF 24"
+      - "POTION 1 potion:healing"
+      - "WATER_BUCKET"
 
-  diamond_archer:
-    name: "&#9AD8E8Diamond Archer Kit"
-    icon: BOW
-    category: pvp
+  bloom:
+    name: "&#F7C6D4&l✾ Bloom Kit"
+    icon: DIAMOND_SWORD
+    category: free
     description:
-      - "&7A strong bow, light armour, a sword and golden apples."
+      - "&7Your first full diamond set,"
+      - "&7with amethyst trims."
     cooldown: 2d
     required-rank: bloom
     items:
+      - item: "DIAMOND_SWORD 1 sharpness:1"
+        name: "&#F7C6D4Bloom Blade"
+      - "DIAMOND_PICKAXE 1 efficiency:2 unbreaking:1"
+      - "IRON_AXE 1 efficiency:2"
+      - "IRON_SHOVEL 1 efficiency:2"
+      - item: "DIAMOND_HELMET"
+        name: "&#F7C6D4Bloom Helmet"
+        trim: "amethyst flow"
+      - item: "DIAMOND_CHESTPLATE"
+        name: "&#F7C6D4Bloom Chestplate"
+        trim: "amethyst flow"
+      - item: "DIAMOND_LEGGINGS"
+        name: "&#F7C6D4Bloom Leggings"
+        trim: "amethyst flow"
+      - item: "DIAMOND_BOOTS"
+        name: "&#F7C6D4Bloom Boots"
+        trim: "amethyst flow"
+      - "SHIELD"
       - "BOW 1 power:2"
       - "ARROW 64"
-      - "ARROW 64"
       - "GOLDEN_APPLE 2"
-      - "IRON_SWORD"
-      - "IRON_HELMET 1 protection:1"
-      - "DIAMOND_CHESTPLATE"
-      - "IRON_LEGGINGS 1 protection:1"
-      - "IRON_BOOTS 1 protection:1"
-      - "COOKED_BEEF 16"
+      - "COOKED_BEEF 32"
+      - "POTION 1 potion:swiftness"
+      - "WATER_BUCKET"
 
-  diamond_fighter:
-    name: "&#9AD8E8Diamond Fighter Kit"
-    icon: DIAMOND_SWORD
-    category: pvp
+  blossom:
+    name: "&#F4A9C0&l✿ Blossom Kit"
+    icon: PINK_PETALS
+    category: free
     description:
-      - "&7Full diamond with a few golden apples."
-    cooldown: 3d
+      - "&7Enchanted diamond in Blossom pink,"
+      - "&7plus pearls and potions."
+    cooldown: 2d
     required-rank: blossom
     items:
-      - "DIAMOND_SWORD"
-      - "DIAMOND_HELMET"
-      - "DIAMOND_CHESTPLATE"
-      - "DIAMOND_LEGGINGS"
-      - "DIAMOND_BOOTS"
+      - item: "DIAMOND_SWORD 1 sharpness:2 unbreaking:1"
+        name: "&#F4A9C0Blossom Blade"
+      - "DIAMOND_PICKAXE 1 efficiency:3 unbreaking:2"
+      - "DIAMOND_AXE 1 efficiency:2 unbreaking:1"
+      - "DIAMOND_SHOVEL 1 efficiency:2"
+      - item: "DIAMOND_HELMET 1 protection:1 unbreaking:1"
+        name: "&#F4A9C0Blossom Crown"
+        trim: "amethyst wayfinder"
+      - item: "DIAMOND_CHESTPLATE 1 protection:1 unbreaking:1"
+        name: "&#F4A9C0Blossom Guard"
+        trim: "amethyst wayfinder"
+      - item: "DIAMOND_LEGGINGS 1 protection:1 unbreaking:1"
+        name: "&#F4A9C0Blossom Greaves"
+        trim: "amethyst wayfinder"
+      - item: "DIAMOND_BOOTS 1 protection:1 unbreaking:1"
+        name: "&#F4A9C0Blossom Treads"
+        trim: "amethyst wayfinder"
       - "SHIELD"
-      - "BOW"
-      - "ARROW 48"
-      - "GOLDEN_APPLE 4"
-      - "COOKED_BEEF 16"
+      - "BOW 1 power:2 unbreaking:1"
+      - "ARROW 64"
+      - "GOLDEN_APPLE 3"
+      - "GOLDEN_CARROT 32"
+      - "ENDER_PEARL 4"
+      - "POTION 1 potion:strength"
+      - "POTION 1 potion:swiftness"
+      - "POTION 1 potion:fire_resistance"
+      - "WATER_BUCKET"
 
-  diamond_warrior:
-    name: "&#9AD8E8Diamond Warrior Kit"
-    icon: DIAMOND_CHESTPLATE
-    category: pvp
+  sakura:
+    name: "&#E27D9C&l❀ Sakura Kit"
+    icon: CHERRY_SAPLING
+    category: free
     description:
-      - "&7The best free kit: lightly enchanted diamond."
+      - "&7Strong diamond with redstone trims,"
+      - "&7the best tools and a full potion set."
     cooldown: 3d
     required-rank: sakura
     items:
-      - "DIAMOND_SWORD 1 sharpness:1"
-      - "DIAMOND_AXE"
-      - "DIAMOND_HELMET 1 protection:1"
-      - "DIAMOND_CHESTPLATE 1 protection:1"
-      - "DIAMOND_LEGGINGS 1 protection:1"
-      - "DIAMOND_BOOTS 1 protection:1"
-      - "SHIELD"
-      - "BOW 1 power:1"
+      - item: "DIAMOND_SWORD 1 sharpness:3 unbreaking:2"
+        name: "&#E27D9CSakura Edge"
+      - "DIAMOND_PICKAXE 1 efficiency:3 unbreaking:3"
+      - "DIAMOND_AXE 1 efficiency:3 unbreaking:2"
+      - "DIAMOND_SHOVEL 1 efficiency:3"
+      - item: "DIAMOND_HELMET 1 protection:2 unbreaking:2"
+        name: "&#E27D9CSakura Helm"
+        trim: "redstone silence"
+      - item: "DIAMOND_CHESTPLATE 1 protection:2 unbreaking:2"
+        name: "&#E27D9CSakura Plate"
+        trim: "redstone silence"
+      - item: "DIAMOND_LEGGINGS 1 protection:2 unbreaking:2"
+        name: "&#E27D9CSakura Leggings"
+        trim: "redstone silence"
+      - item: "DIAMOND_BOOTS 1 protection:2 unbreaking:2"
+        name: "&#E27D9CSakura Boots"
+        trim: "redstone silence"
+      - "SHIELD 1 unbreaking:2"
+      - "BOW 1 power:3 unbreaking:2"
+      - "ARROW 64"
+      - "GOLDEN_APPLE 4"
+      - "GOLDEN_CARROT 48"
+      - "ENDER_PEARL 6"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:fire_resistance"
+      - "SPLASH_POTION 2 potion:strong_healing"
+      - "WATER_BUCKET"
+
+  eternal:
+    name: "&#FFD98A&l♛ Eternal Kit"
+    icon: NETHER_STAR
+    category: free
+    description:
+      - "&7The best free kit on the server."
+      - "&7Comes with the &#FFD98AEternal Bloom&7, a sword"
+      - "&7with 3 abilities and a passive."
+    cooldown: 3d
+    required-rank: eternal
+    items:
+      - weapon: eternal_bloom
+      - item: "DIAMOND_PICKAXE 1 efficiency:3 unbreaking:3"
+        name: "&#FFD98AEternal Pickaxe"
+      - "DIAMOND_AXE 1 efficiency:3 unbreaking:3"
+      - "DIAMOND_SHOVEL 1 efficiency:3 unbreaking:3"
+      - item: "DIAMOND_HELMET 1 protection:3 unbreaking:3"
+        name: "&#FFD98AEternal Crown"
+        trim: "gold eye"
+      - item: "DIAMOND_CHESTPLATE 1 protection:3 unbreaking:3"
+        name: "&#FFD98AEternal Plate"
+        trim: "gold eye"
+      - item: "DIAMOND_LEGGINGS 1 protection:3 unbreaking:3"
+        name: "&#FFD98AEternal Leggings"
+        trim: "gold eye"
+      - item: "DIAMOND_BOOTS 1 protection:3 unbreaking:3"
+        name: "&#FFD98AEternal Boots"
+        trim: "gold eye"
+      - "SHIELD 1 unbreaking:3"
+      - item: "BOW 1 power:3 unbreaking:3 flame:1"
+        name: "&#FFD98AEternal Bow"
       - "ARROW 64"
       - "GOLDEN_APPLE 5"
-      - "COOKED_BEEF 24"
+      - "GOLDEN_CARROT 64"
+      - "ENDER_PEARL 8"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:long_fire_resistance"
+      - "SPLASH_POTION 3 potion:strong_healing"
+      - "WATER_BUCKET"
 
   # ==========================================================
-  #  VIP (permission)   stronger, but inside the same limits
+  #  VIP KITS  (permission; a higher VIP rank also gets the lower kits)
   # ==========================================================
 
   vip:
-    name: "&#8FCB9BVIP Kit"
-    icon: DIAMOND_SWORD
+    name: "&#8FCB9B&l❦ VIP Kit"
+    icon: EMERALD
     category: vip
     description:
-      - "&7Full diamond with golden apples."
+      - "&7Enchanted diamond with emerald trims"
+      - "&7and the &#8FCB9BVerdant Fang&7 ability sword."
     cooldown: 2d
     permission: blossomcore.vip
     items:
-      - "DIAMOND_SWORD"
-      - "DIAMOND_HELMET"
-      - "DIAMOND_CHESTPLATE"
-      - "DIAMOND_LEGGINGS"
-      - "DIAMOND_BOOTS"
-      - "SHIELD"
-      - "BOW"
+      - weapon: verdant_fang
+      - "DIAMOND_PICKAXE 1 efficiency:3 unbreaking:2"
+      - "DIAMOND_AXE 1 efficiency:2 unbreaking:1"
+      - "DIAMOND_SHOVEL 1 efficiency:2"
+      - item: "DIAMOND_HELMET 1 protection:2 unbreaking:2"
+        name: "&#8FCB9BVIP Helm"
+        trim: "emerald flow"
+      - item: "DIAMOND_CHESTPLATE 1 protection:2 unbreaking:2"
+        name: "&#8FCB9BVIP Chestplate"
+        trim: "emerald flow"
+      - item: "DIAMOND_LEGGINGS 1 protection:2 unbreaking:2"
+        name: "&#8FCB9BVIP Leggings"
+        trim: "emerald flow"
+      - item: "DIAMOND_BOOTS 1 protection:2 unbreaking:2"
+        name: "&#8FCB9BVIP Boots"
+        trim: "emerald flow"
+      - "SHIELD 1 unbreaking:2"
+      - "BOW 1 power:2 unbreaking:2"
       - "ARROW 64"
-      - "GOLDEN_APPLE 5"
-      - "COOKED_BEEF 32"
+      - "GOLDEN_APPLE 4"
+      - "GOLDEN_CARROT 32"
+      - "ENDER_PEARL 4"
+      - "POTION 1 potion:strength"
+      - "POTION 1 potion:swiftness"
+      - "SPLASH_POTION 2 potion:healing"
+      - "WATER_BUCKET"
 
   vipplus:
-    name: "&#8FCB9BVIP&f+ &#8FCB9BKit"
+    name: "&#9AD8E8&l❄ VIP+ Kit"
     icon: DIAMOND_CHESTPLATE
     category: vip
     description:
-      - "&7Lightly enchanted diamond and extra supplies."
+      - "&7Max-level diamond with diamond trims"
+      - "&7and the &#9AD8E8Frost Lily&7 ability sword."
     cooldown: 2d
     permission: blossomcore.vipplus
     items:
-      - "DIAMOND_SWORD 1 sharpness:1"
-      - "DIAMOND_HELMET 1 protection:1"
-      - "DIAMOND_CHESTPLATE 1 protection:1"
-      - "DIAMOND_LEGGINGS 1 protection:1"
-      - "DIAMOND_BOOTS 1 protection:1"
-      - "SHIELD"
-      - "BOW 1 power:1"
+      - weapon: frost_lily
+      - "DIAMOND_PICKAXE 1 efficiency:3 unbreaking:3"
+      - "DIAMOND_AXE 1 efficiency:3 unbreaking:3"
+      - "DIAMOND_SHOVEL 1 efficiency:3"
+      - item: "DIAMOND_HELMET 1 protection:3 unbreaking:3"
+        name: "&#9AD8E8Frostbloom Helm"
+        trim: "diamond ward"
+      - item: "DIAMOND_CHESTPLATE 1 protection:3 unbreaking:3"
+        name: "&#9AD8E8Frostbloom Chestplate"
+        trim: "diamond ward"
+      - item: "DIAMOND_LEGGINGS 1 protection:3 unbreaking:3"
+        name: "&#9AD8E8Frostbloom Leggings"
+        trim: "diamond ward"
+      - item: "DIAMOND_BOOTS 1 protection:3 unbreaking:3"
+        name: "&#9AD8E8Frostbloom Boots"
+        trim: "diamond ward"
+      - "SHIELD 1 unbreaking:3"
+      - "BOW 1 power:3 unbreaking:3"
       - "ARROW 64"
       - "GOLDEN_APPLE 5"
-      - "COOKED_BEEF 32"
-      - "ENDER_PEARL 4"
+      - "GOLDEN_CARROT 48"
+      - "ENDER_PEARL 6"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:fire_resistance"
+      - "SPLASH_POTION 2 potion:strong_healing"
+      - "WATER_BUCKET"
 
   elite:
-    name: "&#F4A9C0Elite Kit"
-    icon: DIAMOND_AXE
-    category: vip
-    description:
-      - "&7High quality diamond with balanced enchantments."
-    cooldown: 3d
-    permission: blossomcore.elite
-    items:
-      - "DIAMOND_SWORD 1 sharpness:2 unbreaking:1"
-      - "DIAMOND_AXE 1 unbreaking:1"
-      - "DIAMOND_HELMET 1 protection:2 unbreaking:1"
-      - "DIAMOND_CHESTPLATE 1 protection:2 unbreaking:1"
-      - "DIAMOND_LEGGINGS 1 protection:2 unbreaking:1"
-      - "DIAMOND_BOOTS 1 protection:2 unbreaking:1"
-      - "SHIELD"
-      - "BOW 1 power:2"
-      - "ARROW 64"
-      - "GOLDEN_APPLE 6"
-      - "COOKED_BEEF 32"
-      - "ENDER_PEARL 4"
-
-  legend:
-    name: "&#FFD98ABlossom Legend Kit"
-    icon: PINK_PETALS
-    category: vip
-    description:
-      - "&7Blossom-themed diamond gear."
-    cooldown: 3d
-    permission: blossomcore.legend
-    items:
-      - item: "DIAMOND_SWORD 1 sharpness:3 unbreaking:2"
-        name: "&#F4A9C0Blossom Blade"
-        lore:
-          - "&7Its edge never loses a petal."
-      - item: "DIAMOND_AXE 1 unbreaking:2"
-        name: "&#F4A9C0Blossom Cleaver"
-      - item: "DIAMOND_HELMET 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Blossom Crown"
-      - item: "DIAMOND_CHESTPLATE 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Blossom Guard"
-      - item: "DIAMOND_LEGGINGS 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Blossom Greaves"
-      - item: "DIAMOND_BOOTS 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Blossom Treads"
-      - item: "BOW 1 power:3 unbreaking:2"
-        name: "&#F4A9C0Petal Bow"
-      - "SHIELD"
-      - "ARROW 64"
-      - "GOLDEN_APPLE 6"
-      - "GOLDEN_CARROT 32"
-      - "ENDER_PEARL 8"
-
-  # ---------- Netherite: long cooldowns, and the player must also have
-  # ---------- played enough to reach the Gardener free rank.
-
-  vip_netherite:
-    name: "&#B8A7C9VIP Netherite Kit"
-    icon: NETHERITE_SWORD
-    category: vip
-    description:
-      - "&7Plain netherite. Once a week."
-    cooldown: 7d
-    permission: blossomcore.vipplus
-    required-rank: gardener
-    items:
-      - "NETHERITE_SWORD"
-      - "NETHERITE_HELMET"
-      - "NETHERITE_CHESTPLATE"
-      - "NETHERITE_LEGGINGS"
-      - "NETHERITE_BOOTS"
-      - "SHIELD"
-      - "BOW"
-      - "ARROW 64"
-      - "GOLDEN_APPLE 4"
-
-  elite_netherite:
-    name: "&#B8A7C9Elite Netherite Kit"
+    name: "&#F4A9C0&l❀ Elite Kit"
     icon: NETHERITE_CHESTPLATE
     category: vip
     description:
-      - "&7Netherite with balanced enchantments. Once a week."
-    cooldown: 7d
+      - "&7Netherite with amethyst trims"
+      - "&7and the &#F4A9C0Rose Thorn&7 ability sword."
+    cooldown: 3d
     permission: blossomcore.elite
-    required-rank: gardener
     items:
-      - "NETHERITE_SWORD 1 sharpness:2"
-      - "NETHERITE_HELMET 1 protection:2"
-      - "NETHERITE_CHESTPLATE 1 protection:2"
-      - "NETHERITE_LEGGINGS 1 protection:2"
-      - "NETHERITE_BOOTS 1 protection:2"
-      - "SHIELD"
-      - "BOW 1 power:2"
-      - "ARROW 64"
-      - "GOLDEN_APPLE 5"
-      - "COOKED_BEEF 32"
-
-  legend_netherite:
-    name: "&#FFD98ALegend Netherite Kit"
-    icon: NETHERITE_HELMET
-    category: vip
-    description:
-      - "&7The strongest kit on the server. Every 10 days."
-    cooldown: 10d
-    permission: blossomcore.legend
-    required-rank: gardener
-    items:
-      - item: "NETHERITE_SWORD 1 sharpness:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Blossom Blade"
-      - item: "NETHERITE_HELMET 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Blossom Crown"
-      - item: "NETHERITE_CHESTPLATE 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Blossom Guard"
-      - item: "NETHERITE_LEGGINGS 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Blossom Greaves"
-      - item: "NETHERITE_BOOTS 1 protection:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Blossom Treads"
-      - item: "BOW 1 power:3 unbreaking:2"
-        name: "&#F4A9C0Eternal Petal Bow"
-      - "SHIELD"
+      - weapon: rose_thorn
+      - "NETHERITE_PICKAXE 1 efficiency:3 unbreaking:3"
+      - "NETHERITE_AXE 1 efficiency:3 unbreaking:3"
+      - "DIAMOND_SHOVEL 1 efficiency:3 unbreaking:2"
+      - item: "NETHERITE_HELMET 1 protection:2 unbreaking:3"
+        name: "&#F4A9C0Elite Crown"
+        trim: "amethyst silence"
+      - item: "NETHERITE_CHESTPLATE 1 protection:2 unbreaking:3"
+        name: "&#F4A9C0Elite Guard"
+        trim: "amethyst silence"
+      - item: "NETHERITE_LEGGINGS 1 protection:2 unbreaking:3"
+        name: "&#F4A9C0Elite Greaves"
+        trim: "amethyst silence"
+      - item: "NETHERITE_BOOTS 1 protection:2 unbreaking:3"
+        name: "&#F4A9C0Elite Treads"
+        trim: "amethyst silence"
+      - "SHIELD 1 unbreaking:3"
+      - "BOW 1 power:3 unbreaking:3"
       - "ARROW 64"
       - "GOLDEN_APPLE 6"
-      - "GOLDEN_CARROT 32"
+      - "GOLDEN_CARROT 64"
+      - "ENDER_PEARL 8"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:long_fire_resistance"
+      - "SPLASH_POTION 3 potion:strong_healing"
+      - "WATER_BUCKET"
+
+  legend:
+    name: "&#FF69B4&l✿ Blossom Legend Kit"
+    icon: CHERRY_LEAVES
+    category: vip
+    description:
+      - "&7The best VIP kit: max-level netherite with"
+      - "&7gold trims and the &#FF69B4Sakura Eclipse&7."
+    cooldown: 3d
+    permission: blossomcore.legend
+    items:
+      - weapon: sakura_eclipse
+      - item: "NETHERITE_PICKAXE 1 efficiency:3 unbreaking:3"
+        name: "&#FF69B4Legend Pickaxe"
+      - "NETHERITE_AXE 1 efficiency:3 unbreaking:3"
+      - "NETHERITE_SHOVEL 1 efficiency:3 unbreaking:3"
+      - item: "NETHERITE_HELMET 1 protection:3 unbreaking:3"
+        name: "&#FF69B4Legend Crown"
+        trim: "gold silence"
+      - item: "NETHERITE_CHESTPLATE 1 protection:3 unbreaking:3"
+        name: "&#FF69B4Legend Guard"
+        trim: "gold silence"
+      - item: "NETHERITE_LEGGINGS 1 protection:3 unbreaking:3"
+        name: "&#FF69B4Legend Greaves"
+        trim: "gold silence"
+      - item: "NETHERITE_BOOTS 1 protection:3 unbreaking:3"
+        name: "&#FF69B4Legend Treads"
+        trim: "gold silence"
+      - "SHIELD 1 unbreaking:3"
+      - item: "BOW 1 power:3 unbreaking:3 flame:1 punch:1"
+        name: "&#FF69B4Legend Bow"
+      - "ARROW 64"
+      - "GOLDEN_APPLE 6"
+      - "GOLDEN_CARROT 64"
+      - "ENDER_PEARL 12"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:long_fire_resistance"
+      - "SPLASH_POTION 3 potion:strong_healing"
+      - "WATER_BUCKET"
+
+  # ==========================================================
+  #  OWNER KIT  (permission blossomcore.owner, no limits)
+  # ==========================================================
+
+  owner:
+    name: "&#FF1493&l♛ Owner Kit"
+    icon: NETHERITE_SWORD
+    category: owner
+    description:
+      - "&7The strongest gear on the server,"
+      - "&7with the &#FF1493Blossom Sovereign&7."
+    cooldown: 1h
+    permission: blossomcore.owner
+    ignore-limits: true
+    items:
+      - weapon: blossom_sovereign
+      - item: "NETHERITE_PICKAXE 1 efficiency:5 fortune:3 unbreaking:3 mending:1"
+        name: "&#FF1493Sovereign Pickaxe"
+      - item: "NETHERITE_AXE 1 efficiency:5 sharpness:5 unbreaking:3 mending:1"
+        name: "&#FF1493Sovereign Axe"
+      - "NETHERITE_SHOVEL 1 efficiency:5 unbreaking:3 mending:1"
+      - item: "NETHERITE_HELMET 1 protection:4 unbreaking:3 mending:1 respiration:3 aqua_affinity:1"
+        name: "&#FF1493Sovereign Crown"
+        trim: "gold silence"
+      - item: "NETHERITE_CHESTPLATE 1 protection:4 unbreaking:3 mending:1"
+        name: "&#FF1493Sovereign Guard"
+        trim: "gold silence"
+      - item: "NETHERITE_LEGGINGS 1 protection:4 unbreaking:3 mending:1 swift_sneak:3"
+        name: "&#FF1493Sovereign Greaves"
+        trim: "gold silence"
+      - item: "NETHERITE_BOOTS 1 protection:4 unbreaking:3 mending:1 feather_falling:4 depth_strider:3"
+        name: "&#FF1493Sovereign Treads"
+        trim: "gold silence"
+      - "SHIELD 1 unbreaking:3 mending:1"
+      - item: "BOW 1 power:5 punch:2 flame:1 infinity:1 unbreaking:3"
+        name: "&#FF1493Sovereign Bow"
+      - "ARROW 1"
+      - "ELYTRA 1 unbreaking:3 mending:1"
+      - "FIREWORK_ROCKET 64"
+      - "GOLDEN_APPLE 16"
+      - "GOLDEN_CARROT 64"
+      - "ENDER_PEARL 16"
+      - "POTION 1 potion:strong_strength"
+      - "POTION 1 potion:strong_swiftness"
+      - "POTION 1 potion:long_fire_resistance"
+      - "SPLASH_POTION 3 potion:strong_healing"

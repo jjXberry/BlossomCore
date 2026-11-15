@@ -94,11 +94,12 @@ public final class KitManager {
                     continue;
                 }
                 newCategories.add(new Kit.Category(key.toLowerCase(Locale.ROOT), s.getString("name", key),
-                        Items.material(s.getString("icon"), Material.CHEST), List.copyOf(s.getStringList("description"))));
+                        Items.material(s.getString("icon"), Material.CHEST), List.copyOf(s.getStringList("description")),
+                        s.getString("permission", "")));
             }
         }
         if (newCategories.isEmpty()) {
-            newCategories.add(new Kit.Category("kits", "&fKits", Material.CHEST, List.of()));
+            newCategories.add(new Kit.Category("kits", "&fKits", Material.CHEST, List.of(), ""));
         }
 
         Map<String, Kit> loaded = new LinkedHashMap<>();
@@ -138,11 +139,17 @@ public final class KitManager {
                     category = newCategories.get(0).id();
                 }
 
+                boolean ignoreLimits = s.getBoolean("ignore-limits", false);
                 List<ItemStack> items = new ArrayList<>();
                 List<String> problems = new ArrayList<>();
                 int apples = 0;
                 for (Object entry : s.getList("items", List.of())) {
-                    ItemStack item = Items.parse(entry, problems);
+                    ItemStack item;
+                    if (entry instanceof Map<?, ?> map && map.get("weapon") != null) {
+                        item = plugin.weapons().create(String.valueOf(map.get("weapon")), problems);
+                    } else {
+                        item = Items.parse(entry, problems);
+                    }
                     if (item == null) {
                         continue;
                     }
@@ -150,7 +157,7 @@ public final class KitManager {
                         problems.add(item.getType() + " is on the banned list in config.yml and was left out");
                         continue;
                     }
-                    if (item.getType() == Material.GOLDEN_APPLE && gapPerKit >= 0) {
+                    if (item.getType() == Material.GOLDEN_APPLE && gapPerKit >= 0 && !ignoreLimits) {
                         int allowed = Math.max(0, gapPerKit - apples);
                         if (item.getAmount() > allowed) {
                             problems.add("more than " + gapPerKit + " golden apples; lowered to the limit in config.yml");
@@ -161,7 +168,9 @@ public final class KitManager {
                         }
                         apples += item.getAmount();
                     }
-                    capEnchants(item, maxLevels, defaultMaxLevel, problems);
+                    if (!ignoreLimits) {
+                        capEnchants(item, maxLevels, defaultMaxLevel, problems);
+                    }
                     if (markGear && (item.getMaxStackSize() == 1 || alsoMark.contains(item.getType()))) {
                         mark(item, id, gearLore);
                     }
@@ -179,7 +188,7 @@ public final class KitManager {
                         List.copyOf(s.getStringList("description")), cooldown, requiredRank,
                         s.getString("permission", ""), s.getBoolean("give-on-first-join", false),
                         Math.max(0, s.getInt("max-claims", 0)),
-                        deathReset && s.getBoolean("reset-on-death", resetDefault), List.copyOf(items)));
+                        deathReset && s.getBoolean("reset-on-death", resetDefault), ignoreLimits, List.copyOf(items)));
             }
         }
         kits = loaded;
@@ -282,6 +291,17 @@ public final class KitManager {
         return categories;
     }
 
+    /** The tabs this player can see (a tab with a permission is hidden from everyone else). */
+    public List<Kit.Category> categories(Player viewer) {
+        List<Kit.Category> list = new ArrayList<>();
+        for (Kit.Category c : categories) {
+            if (c.permission().isEmpty() || viewer.hasPermission(c.permission())) {
+                list.add(c);
+            }
+        }
+        return list.isEmpty() ? categories : list;
+    }
+
     public List<Kit> inCategory(String category) {
         List<Kit> list = new ArrayList<>();
         for (Kit kit : kits.values()) {
@@ -307,7 +327,16 @@ public final class KitManager {
     /** "8x Golden Apple", "1x Diamond Sword (Sharpness II)" */
     public static String describe(ItemStack item) {
         StringBuilder sb = new StringBuilder();
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null && meta.hasDisplayName()) {
+            sb.append(item.getAmount()).append("x ").append(net.kyori.adventure.text.serializer.legacy
+                    .LegacyComponentSerializer.legacyAmpersand().serialize(meta.displayName()));
+            return sb.toString();
+        }
         sb.append(item.getAmount()).append("x ").append(Text.pretty(item.getType().name()));
+        if (meta instanceof org.bukkit.inventory.meta.PotionMeta potion && potion.getBasePotionType() != null) {
+            sb.append(" &8(&7").append(Text.pretty(potion.getBasePotionType().getKey().getKey().toUpperCase(Locale.ROOT))).append("&8)");
+        }
         if (!item.getEnchantments().isEmpty()) {
             List<String> parts = new ArrayList<>();
             for (Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
@@ -435,7 +464,7 @@ public final class KitManager {
         boolean cut = false;
         for (ItemStack template : kit.items()) {
             ItemStack item = template.clone();
-            if (item.getType() == Material.GOLDEN_APPLE && gapPerDay > 0) {
+            if (item.getType() == Material.GOLDEN_APPLE && gapPerDay > 0 && !kit.ignoreLimits()) {
                 long today = BlossomCore.today();
                 if (data.gapDay != today) {
                     data.gapDay = today;

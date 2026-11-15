@@ -37,6 +37,7 @@ admin-help:
   - " &f/blossomcore rating set <player> <amount>"
   - " &f/blossomcore kit give <player> <kit>"
   - " &f/blossomcore kit reset <player> [kit]"
+  - " &f/blossomcore weapon give <player> <weapon>"
   - " &f/blossomcore season end confirm"
   - " &f/blossomcore save"
 
@@ -134,7 +135,7 @@ menu-main-ranks:
   - "&7Every rank unlocks new kits."
 menu-main-kits-name: "&f&lKits"
 menu-main-kits:
-  - "&7Survival, PvP and VIP kits."
+  - "&7Free kits, VIP kits and ability swords."
   - ""
   - "&#F4A9C0Click to open"
 menu-main-pvp-name: "&#F4A9C0&lPvP"
